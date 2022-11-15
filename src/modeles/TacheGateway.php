@@ -1,17 +1,12 @@
 <?php
 
 require('Connexion.php');
-// require('Tache.php');
 
 class TacheGateway {
 
     private $con;  
 
     public function __construct($con) {
-        // $user= 'jucarvalhe';
-        // $pass='achanger';
-        // $dsn='mysql:host=localhost;dbname=dbjucarvalhe';
-        // $con = new Connexion($dsn,$user,$pass);
         $this->con = $con;
     }
 
