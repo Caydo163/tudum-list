@@ -10,7 +10,8 @@ $dsn='mysql:host=localhost;dbname=dbjucarvalhe';
 //Vues
 
 $vues['erreur']='vues/erreur.php';
-$vues['vuephp1']='vues/vuephp1.php';
+$vues['accueil']='vues/accueil.php';
+$vues['pageConnexion']='vues/pageConnexion.php';
 
 
 ?>
