@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url(https://fonts.googleapis.com/css?family=Exo:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+h1 {
+  font-size: 3em;
+  color: #e50914;
+  font-family: "Bebas Neue", cursive;
+  text-align: center;
+}
+
+body {
+  background-color: #3d3939;
+  font-family: Exo;
+}
+
+h4 {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+div {
+    border-radius: 15px;
+    background-color: #656565;
+    margin: auto;
+    margin-top: 250px;
+    width: 40%;
+    padding: 50px;
+}
