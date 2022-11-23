@@ -1,13 +1,14 @@
 <?php
 
-require('Connexion.php');
+// require('Connexion.php');
 
 class ListeGateway {
 
     private $con;  
 
-    public function __construct() {
-        $this->con = new Connexion($dsn, $username, $password);
+    public function __construct($con) {
+        $this->con = $con;
+        // $this->con = new Connexion($dsn, $username, $password);
     }
 
     public function getAllListe() {

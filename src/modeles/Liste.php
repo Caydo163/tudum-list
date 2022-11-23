@@ -6,9 +6,9 @@ class Liste {
     private string $name;
     private $tabTaches = array();
 
-    public function __construct($id, $name, $owner = NULL) {
+    public function __construct($id, $name, $owner = -1) {
         $this->id = $id;
-        $this->id = $id;
+        $this->name = $name;
         $this->owner = $owner;
     }
 

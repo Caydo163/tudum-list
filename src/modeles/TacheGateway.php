@@ -1,6 +1,5 @@
 <?php
 
-require('Connexion.php');
 
 class TacheGateway {
 
@@ -13,6 +12,12 @@ class TacheGateway {
     public function getAllTache() {
         $query = "SELECT * FROM Tache"; 
         $this->con->executeQuery($query);
+        return $this->con->getResults();
+    }
+
+    public function getTacheListe($liste) {
+        $query = "SELECT * FROM Tache WHERE liste = :liste"; 
+        $this->con->executeQuery($query, array(':liste' => array($liste->getId(), PDO::PARAM_INT) ));
         return $this->con->getResults();
     }
 
