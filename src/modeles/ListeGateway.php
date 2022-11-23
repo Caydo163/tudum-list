@@ -6,8 +6,8 @@ class ListeGateway {
 
     private $con;  
 
-    public function __construct($con) {
-        $this->con = $con;
+    public function __construct() {
+        $this->con = new Connexion($dsn, $username, $password);
     }
 
     public function getAllListe() {
@@ -17,8 +17,8 @@ class ListeGateway {
     }
 
     public function ajouterListe($liste) {
-        $query = "INSERT INTO Liste (nom) VALUES (:nom);"; 
-        $this->con->executeQuery($query, array(':nom' => array($liste->getNom(), PDO::PARAM_STR) ) );
+        $query = "INSERT INTO Liste (nom) VALUES (:nom, :owner);"; 
+        $this->con->executeQuery($query, array(':nom' => array($liste->getNom(), PDO::PARAM_STR),':owner' => array($liste->getOwner(), PDO::PARAM_INT) ) );
     }
 
     public function supprimerListe($liste) {

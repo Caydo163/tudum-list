@@ -2,20 +2,26 @@
 
 class Liste {
     private int $id;
-    private string $nom;
+    private int $owner;
+    private string $name;
     private $tabTaches = array();
 
-    public function __construct($id, $nom) {
+    public function __construct($id, $name, $owner = NULL) {
         $this->id = $id;
-        $this->nom = $nom;
+        $this->id = $id;
+        $this->owner = $owner;
     }
 
     public function getId() : int {
         return $this->id;
     }
 
-    public function getNom() : string {
-        return $this->nom;
+    public function getOwner() : int {
+        return $this->owner;
+    }
+
+    public function getName() : string {
+        return $this->name;
     }
 
     public function getTabTaches() : array {
@@ -26,8 +32,12 @@ class Liste {
         $this->id = $id;
     }
 
-    public function setNom($nom) {
-        $this->nom = $nom;
+    public function setOwner($owner) {
+        $this->owner = $owner;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
     }
 
     public function ajouterTache($tache) {

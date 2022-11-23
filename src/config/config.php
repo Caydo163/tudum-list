@@ -1,7 +1,5 @@
 <?php
 
-
-
 //BD
 $user= 'jucarvalhe';
 $pass='achanger';

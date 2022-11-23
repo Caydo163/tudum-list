@@ -20,7 +20,7 @@
                 class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-5 mb-2">
                 <div class="d-flex align-items-center">
                   <input class="form-check-input me-2" type="checkbox" value="" aria-label="..." />
-                  Cras justo odio
+                  Tache 1
                 </div>
                 <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
                   <i class="fas fa-times text-primary"></i>
