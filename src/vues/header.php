@@ -2,7 +2,7 @@
 <header class="p-3 bg-dark text-white">
     <div class="container-fluid" style="margin:0 5px;">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="vues/accueil.php" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="?action=" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <h1>TUDUM-LIST</h1>    
             </a>
             
@@ -12,7 +12,7 @@
             </ul>
             
             <div class="text-end">
-                <a type="button" class="btn btn-outline-light me-2" href="vues/pageConnexion.php">Se connecter</a>
+                <a type="button" class="btn btn-outline-light me-2" href="?action=connexion">Se connecter</a>
                 <a type="button" class="btn btn-warning" style="background-color:#E50914;border:#E50914 1px solid;">S'inscrire</a>
             </div>
         </div>
