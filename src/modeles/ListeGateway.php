@@ -19,7 +19,7 @@ class ListeGateway {
 
     public function ajouterListe($liste) {
         $query = "INSERT INTO List (name, owner) VALUES (:name, :owner);"; 
-        $this->con->executeQuery($query, array(':name' => array($liste->getNom(), PDO::PARAM_STR),':owner' => array($liste->getOwner(), PDO::PARAM_INT) ) );
+        $this->con->executeQuery($query, array(':name' => array($liste->getName(), PDO::PARAM_STR),':owner' => array($liste->getOwner(), PDO::PARAM_INT) ) );
     }
 
     public function supprimerListe($id) {

@@ -31,6 +31,11 @@ class FrontController {
                 case "add_task":
                     $this->addTask();
                     break;
+
+                case "add_list":
+                    echo 'ezifozjoefijzeofjzeoif';
+                    $this->addList();
+                    break;
                 
                 case "remove_task":
                     $this->removeTask();
@@ -71,9 +76,18 @@ class FrontController {
 
 
     public function addTask() {
+        global $rep, $vues;
         $tache_gw = new TacheGateway($this->con);
         $tache = new Tache(0, $_REQUEST['list'], $_REQUEST['task']);
         $tache_gw->ajouterTache($tache);
+        $this->initialisation();
+    }
+
+    public function addList() {
+        global $rep, $vues;
+        $liste_gw = new ListeGateway($this->con);
+        $liste = new Liste(0, $_REQUEST['name']);
+        $liste_gw->ajouterListe($liste);
         $this->initialisation();
     }
 

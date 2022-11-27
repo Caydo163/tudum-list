@@ -11,6 +11,26 @@
         
         <main style="background-color: #3d3939">
         <div class="container py-3">
+        
+        <div class="col-auto">
+            <div class="card rounded-4 mb-3" style="background-color: #656565;">
+              <div class="card-body p-3">
+              <form class="d-flex justify-content-flex-start align-items-center" method="POST">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="Nouvelle liste ..." name="name" required>
+                    <input type="hidden" name="action" value="add_list">
+                  </div>
+                  <div class="col">
+                    
+                    <button type="submit" class="btn btn-outline-light">
+                      Ajouter liste
+                      <i class="bi bi-plus-square"></i>
+                    </div>
+                  </button>
+              </form>
+</div>
+</div>
+</div>
         <div class="row">
 
           
@@ -60,7 +80,7 @@
             
             echo '</ul>
             <form class="d-flex justify-content-center align-items-center mt-4" method="POST">
-                <input type="text" class="form-control" placeholder="Nouvelle tâche ..." name="task">
+                <input type="text" class="form-control" placeholder="Nouvelle tâche ..." name="task" required>
                 <input type="hidden" name="action" value="add_task">
                 <input type="hidden" name="list" value="'.$l->getId().'">
               <button type="submit" class="btn btn-warning ms-2" style="background-color:#E50914;border:#E50914 1px solid;">Ajouter</button>
