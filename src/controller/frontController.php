@@ -1,7 +1,10 @@
 <?php
 
 require($rep."Connexion.php");
-
+require($rep."modeles/ListeGateway.php");
+require($rep."modeles/Liste.php");
+require($rep."modeles/Tache.php");
+require($rep."modeles/TacheGateway.php");
 
 class FrontController {
     private $con;
@@ -23,6 +26,18 @@ class FrontController {
                 
                 case "connexion":
                     require($rep.$vues['connexion']);
+                    break;
+
+                case "add_task":
+                    $this->addTask();
+                    break;
+                
+                case "remove_task":
+                    $this->removeTask();
+                    break;
+
+                case "remove_list":
+                    $this->removeList();
                     break;
 
 				//mauvaise action
@@ -55,12 +70,28 @@ class FrontController {
     }
 
 
+    public function addTask() {
+        $tache_gw = new TacheGateway($this->con);
+        $tache = new Tache(0, $_REQUEST['list'], $_REQUEST['task']);
+        $tache_gw->ajouterTache($tache);
+        $this->initialisation();
+    }
+
+    public function removeTask() {
+        $tache_gw = new TacheGateway($this->con);
+        $tache_gw->supprimerTache($_REQUEST['id']);
+        $this->initialisation();
+    }
+
+    public function removeList() {
+        $liste_gw = new ListeGateway($this->con);
+        $liste_gw->supprimerListe($_REQUEST['id']);
+        $this->initialisation();
+    }
+
+
     public function initialisation() {
         global $rep, $vues;
-        require($rep."modeles/ListeGateway.php");
-        require($rep."modeles/Liste.php");
-        require($rep."modeles/Tache.php");
-        require($rep."modeles/TacheGateway.php");
         $liste_gw = new ListeGateway($this->con);
         $tache_gw = new TacheGateway($this->con);
         

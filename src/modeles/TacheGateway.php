@@ -38,9 +38,9 @@ class TacheGateway {
         $this->con->executeQuery($query, array(':name' => array($tache->getNom(), PDO::PARAM_STR),':list' => array($tache->getListe(), PDO::PARAM_INT) ) );
     }
 
-    public function supprimerTache($tache) {
+    public function supprimerTache($id) {
         $query = "DELETE FROM Task WHERE id = :id;"; 
-        $this->con->executeQuery($query, array(':id' => array($tache->getId(), PDO::PARAM_INT) ) );
+        $this->con->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT) ) );
     }
 
 }

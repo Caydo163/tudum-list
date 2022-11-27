@@ -22,9 +22,9 @@ class ListeGateway {
         $this->con->executeQuery($query, array(':name' => array($liste->getNom(), PDO::PARAM_STR),':owner' => array($liste->getOwner(), PDO::PARAM_INT) ) );
     }
 
-    public function supprimerListe($liste) {
+    public function supprimerListe($id) {
         $query = "DELETE FROM List WHERE id = :id;"; 
-        $this->con->executeQuery($query, array(':id' => array($liste->getId(), PDO::PARAM_INT) ) );
+        $this->con->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT) ) );
     }
 
     public function getAllTaches($liste) {

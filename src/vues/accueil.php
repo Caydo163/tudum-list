@@ -2,6 +2,7 @@
     <head>
         <title>TUDUM-LIST</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
         <link href="vues/style.css" rel="stylesheet">
     </head>
     <body>
@@ -26,7 +27,12 @@
             <div class="card rounded-4 mb-3" style="background-color: #656565;">
           <div class="card-body p-3">
 
-          <h6>'.$l->getName().'</h6>
+          <div class="row justify-content-between">
+          <h6 class="col-auto">'.$l->getName().'</h6>
+          <a class="col-auto" href="?action=remove_list&id='.$l->getId().'" title="Remove list">
+          <i class="bi bi-trash3" style="color:white"></i>
+        </a>
+        </div>
           <br>
           <ul class="list-group">';
           
@@ -44,8 +50,8 @@
 
               
                 echo '</div>
-                <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
-                  <i class="fas fa-times text-primary"></i>
+                <a href="?action=remove_task&id='.$t->getId().'" title="Remove task">
+                  <i class="bi bi-trash3" style="color:#E50914"></i>
                 </a>
               </li>';
               
@@ -53,6 +59,12 @@
 
             
             echo '</ul>
+            <form class="d-flex justify-content-center align-items-center mt-4" method="POST">
+                <input type="text" class="form-control" placeholder="Nouvelle tâche ..." name="task">
+                <input type="hidden" name="action" value="add_task">
+                <input type="hidden" name="list" value="'.$l->getId().'">
+              <button type="submit" class="btn btn-warning ms-2" style="background-color:#E50914;border:#E50914 1px solid;">Ajouter</button>
+            </form>
             </div>
             </div>
             </div>
