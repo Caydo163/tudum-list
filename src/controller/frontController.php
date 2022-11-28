@@ -33,7 +33,6 @@ class FrontController {
                     break;
 
                 case "add_list":
-                    echo 'ezifozjoefijzeofjzeoif';
                     $this->addList();
                     break;
                 
