@@ -46,7 +46,9 @@ class FrontController {
 
 				//mauvaise action
 				default:
-                    $TabErreur[] = $erreur['action'];
+                    $typeErreur = $erreur['action'];
+			        $detailErreur= '';
+
                     require($rep.$vues['erreur']);
 				    break;
 			}
@@ -54,13 +56,15 @@ class FrontController {
 		} catch (PDOException $e)
 		{
 			//si erreur BD, pas le cas ici
-			$TabErreur[] = $erreur['pdo'];
+			$typeErreur = $erreur['pdo'];
+			$detailErreur = $e->getMessage();
 			require ($rep.$vues['erreur']);
 
 		}
 		catch (Exception $e2)
 			{
-            $TabErreur[] = $erreur['autres'];
+            $typeErreur = $erreur['autres'];
+            $detailErreur = $e->getMessage();
 			require ($rep.$vues['erreur']);
 			}
 

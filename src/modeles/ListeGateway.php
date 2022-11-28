@@ -18,8 +18,14 @@ class ListeGateway {
     }
 
     public function ajouterListe($liste) {
-        $query = "INSERT INTO List (name, owner) VALUES (:name, :owner);"; 
-        $this->con->executeQuery($query, array(':name' => array($liste->getName(), PDO::PARAM_STR),':owner' => array($liste->getOwner(), PDO::PARAM_INT) ) );
+        if($liste->getOwner == -1) {
+            $query = "INSERT INTO List (name, owner) VALUES (:name, -1);"; 
+            $this->con->executeQuery($query, array(':name' => array($liste->getName(), PDO::PARAM_STR)) );
+        }
+        else {
+            $query = "INSERT INTO List (name, owner) VALUES (:name, :owner);"; 
+            $this->con->executeQuery($query, array(':name' => array($liste->getName(), PDO::PARAM_STR),':owner' => array($liste->getOwner(), PDO::PARAM_INT) ) );
+        }
     }
 
     public function supprimerListe($id) {
@@ -28,7 +34,7 @@ class ListeGateway {
     }
 
     public function getAllTaches($liste) {
-        $query = "SELECT * FROM Tache WHERE list = :id"; 
+        $query = "SELECT * FROM Task WHERE list = :id"; 
         $this->con->executeQuery($query, array(':id' => array($liste->getId(), PDO::PARAM_INT) ));
         return $this->con->getResults();
     }

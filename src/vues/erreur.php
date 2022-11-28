@@ -18,10 +18,8 @@
                     Coucou je suis un message d'erreur personnalisé (mais je suis un peu con je marche pas encore)
                 </p>
                 <?php
-                    foreach ($TabErreur as $value){
-                        $word .="'$value',"; 
-                    }
-                    echo "$word";
+                    echo "$typeErreur";
+                    echo "$detailErreur";
 
                 ?>
                 
