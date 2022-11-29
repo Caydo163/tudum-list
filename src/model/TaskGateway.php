@@ -18,7 +18,10 @@ class TaskGateway {
     public function getTasksList($liste) {
         $query = "SELECT * FROM Task WHERE list = :list"; 
         $this->con->executeQuery($query, array(':list' => array($liste->getId(), PDO::PARAM_INT) ));
-        return $this->con->getResults();
+        foreach ($this->con->getResults() as $task) {
+            $tasks[] = new Task($task['list'],utf8_encode($task['name']),$task['achieve'],$task['id']);
+        }
+        return $tasks;
     }
 
     public function getTaskDone() {

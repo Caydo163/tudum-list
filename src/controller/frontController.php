@@ -113,19 +113,9 @@ class FrontController {
         $list_gw = new ListGateway($this->con);
         $task_gw = new TaskGateway($this->con);
         
-        foreach ($list_gw->getAllList() as $l) {
-            if($l['owner'] == NULL){
-                $owner = -1;
-            } else{
-                $owner = $l['owner'];
-            } 
-            $lists[] = new Liste($l['id'],utf8_encode($l['name']),$owner);
-
-            $t = []; 
-            foreach ($task_gw->getTasksList(end($lists)) as $value) {
-                $t[] = new Task($value['id'],$value['list'],utf8_encode($value['name']),$value['achieve']);
-            }
-            $tasks[$l['id']] = $t;
+        $lists = $list_gw->getAllList();
+        foreach ($lists as $l) {
+            $tasks[$l->getId()] = $task_gw->getTasksList($l);
         }
         require($dir.$views['accueil']);
     }

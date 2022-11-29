@@ -6,7 +6,7 @@ class Liste {
     private string $name;
     private $tasks = array();
 
-    public function __construct($id, $name, $owner = -1) {
+    public function __construct($name, $owner = -1, $id = -1) {
         $this->id = $id;
         $this->name = $name;
         $this->owner = $owner;

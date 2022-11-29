@@ -6,7 +6,7 @@ class Task {
     private string $name;
     private bool $achieve;
 
-    public function __construct($id, $list, $name, $achieve = false) {
+    public function __construct($list, $name, $achieve = false, $id = -1) {
         $this->id = $id;
         $this->list = $list;
         $this->name = $name;

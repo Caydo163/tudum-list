@@ -1,7 +1,5 @@
 <?php
 
-// require('Connexion.php');
-
 class ListGateway {
 
     private $con;  
@@ -13,7 +11,15 @@ class ListGateway {
     public function getAllList() {
         $query = "SELECT * FROM List"; 
         $this->con->executeQuery($query);
-        return $this->con->getResults();
+        foreach ($this->con->getResults() as $list) {
+            if($list['owner'] == NULL){
+                $owner = -1;
+            } else{
+                $owner = $list['owner'];
+            } 
+            $lists[] = new Liste(utf8_encode($list['name']),$owner,$list['id'],);
+        }
+        return $lists;
     }
 
     public function addList($liste) {
