@@ -1,16 +1,17 @@
 <?php
 
-require($rep."Connexion.php");
-require($rep."modeles/ListeGateway.php");
-require($rep."modeles/Liste.php");
-require($rep."modeles/Tache.php");
-require($rep."modeles/TacheGateway.php");
+require($dir."Connexion.php");
+require($dir."model/ListGateway.php");
+require($dir."model/Liste.php");
+require($dir."model/Task.php");
+require($dir."model/TaskGateway.php");
+
 
 class FrontController {
     private $con;
     
     public function __construct() {
-        global $dsn, $user, $pass, $rep, $vues, $erreur;
+        global $dsn, $user, $pass, $dir, $views, $errors;
         // require("config/config.php");
         $this->con = new Connexion($dsn, $user, $pass);
         session_start();
@@ -25,7 +26,7 @@ class FrontController {
 					break;
                 
                 case "connexion":
-                    require($rep.$vues['connexion']);
+                    require($dir.$views['connexion']);
                     break;
 
                 case "add_task":
@@ -46,26 +47,26 @@ class FrontController {
 
 				//mauvaise action
 				default:
-                    $typeErreur = $erreur['action'];
-			        $detailErreur= '';
-
-                    require($rep.$vues['erreur']);
+                //levé exception
+                    require($dir."NonExistingAction.php");
+                    throw new NonExistingAction("L'action demande n'existe pas");
 				    break;
 			}
 
 		} catch (PDOException $e)
 		{
 			//si erreur BD, pas le cas ici
-			$typeErreur = $erreur['pdo'];
+			$typeErreur = $errors['pdo'];
 			$detailErreur = $e->getMessage();
-			require ($rep.$vues['erreur']);
+			require ($dir.$views['erreur']);
 
 		}
 		catch (Exception $e2)
 			{
-            $typeErreur = $erreur['autres'];
-            $detailErreur = $e->getMessage();
-			require ($rep.$vues['erreur']);
+            $typeErreur = $errors['autres'];
+            echo $e2->getMessage();
+            $detailErreur = $e2->getMessage();
+			require ($dir.$views['erreur']);
 			}
 
 
@@ -79,54 +80,54 @@ class FrontController {
 
 
     public function addTask() {
-        global $rep, $vues;
-        $tache_gw = new TacheGateway($this->con);
-        $tache = new Tache(0, $_REQUEST['list'], $_REQUEST['task']);
-        $tache_gw->ajouterTache($tache);
+        global $dir, $views;
+        $task_gw = new TaskGateway($this->con);
+        $task = new Task(0, $_REQUEST['list'], $_REQUEST['task']);
+        $task_gw->addTask($task);
         $this->initialisation();
     }
 
     public function addList() {
-        global $rep, $vues;
-        $liste_gw = new ListeGateway($this->con);
-        $liste = new Liste(0, $_REQUEST['name']);
-        $liste_gw->ajouterListe($liste);
+        global $dir, $views;
+        $list_gw = new ListGateway($this->con);
+        $list = new Liste(0, $_REQUEST['name']);
+        $list_gw->addList($list);
         $this->initialisation();
     }
 
     public function removeTask() {
-        $tache_gw = new TacheGateway($this->con);
-        $tache_gw->supprimerTache($_REQUEST['id']);
+        $task_gw = new TaskGateway($this->con);
+        $task_gw->removeTask($_REQUEST['id']);
         $this->initialisation();
     }
 
     public function removeList() {
-        $liste_gw = new ListeGateway($this->con);
-        $liste_gw->supprimerListe($_REQUEST['id']);
+        $list_gw = new ListGateway($this->con);
+        $list_gw->removeList($_REQUEST['id']);
         $this->initialisation();
     }
 
 
     public function initialisation() {
-        global $rep, $vues;
-        $liste_gw = new ListeGateway($this->con);
-        $tache_gw = new TacheGateway($this->con);
+        global $dir, $views;
+        $list_gw = new ListGateway($this->con);
+        $task_gw = new TaskGateway($this->con);
         
-        foreach ($liste_gw->getAllListe() as $l) {
+        foreach ($list_gw->getAllList() as $l) {
             if($l['owner'] == NULL){
                 $owner = -1;
             } else{
                 $owner = $l['owner'];
             } 
-            $listes[] = new Liste($l['id'],utf8_encode($l['name']),$owner);
+            $lists[] = new Liste($l['id'],utf8_encode($l['name']),$owner);
 
             $t = []; 
-            foreach ($tache_gw->getTacheListe(end($listes)) as $value) {
-                $t[] = new Tache($value['id'],$value['list'],utf8_encode($value['name']),$value['achieve']);
+            foreach ($task_gw->getTasksList(end($lists)) as $value) {
+                $t[] = new Task($value['id'],$value['list'],utf8_encode($value['name']),$value['achieve']);
             }
-            $taches[$l['id']] = $t;
+            $tasks[$l['id']] = $t;
         }
-        require($rep.$vues['accueil']);
+        require($dir.$views['accueil']);
     }
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 
-class TacheGateway {
+class TaskGateway {
 
     private $con;  
 
@@ -9,36 +9,36 @@ class TacheGateway {
         $this->con = $con;
     }
 
-    public function getAllTache() {
+    public function getAllTask() {
         $query = "SELECT * FROM Task"; 
         $this->con->executeQuery($query);
         return $this->con->getResults();
     }
 
-    public function getTacheListe($liste) {
+    public function getTasksList($liste) {
         $query = "SELECT * FROM Task WHERE list = :list"; 
         $this->con->executeQuery($query, array(':list' => array($liste->getId(), PDO::PARAM_INT) ));
         return $this->con->getResults();
     }
 
-    public function getTacheRealise() {
+    public function getTaskDone() {
         $query = "SELECT * FROM Task WHERE achieve = true"; 
         $this->con->executeQuery($query);
         return $this->con->getResults();
     }
 
-    public function getTacheNonRealise() {
+    public function getTaskUnrealized() {
         $query = "SELECT * FROM Task WHERE achieve = false"; 
         $this->con->executeQuery($query);
         return $this->con->getResults();
     }
 
-    public function ajouterTache($tache) {
+    public function addTask($tache) {
         $query = "INSERT INTO Task (name, list) VALUES (:name, :list);"; 
         $this->con->executeQuery($query, array(':name' => array($tache->getNom(), PDO::PARAM_STR),':list' => array($tache->getListe(), PDO::PARAM_INT) ) );
     }
 
-    public function supprimerTache($id) {
+    public function removeTask($id) {
         $query = "DELETE FROM Task WHERE id = :id;"; 
         $this->con->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT) ) );
     }

@@ -4,7 +4,7 @@ class Liste {
     private int $id;
     private int $owner;
     private string $name;
-    private $tabTaches = array();
+    private $tasks = array();
 
     public function __construct($id, $name, $owner = -1) {
         $this->id = $id;
@@ -24,8 +24,8 @@ class Liste {
         return $this->name;
     }
 
-    public function getTabTaches() : array {
-        return $this->tabTaches;
+    public function getTasks() : array {
+        return $this->tasks;
     }
 
     public function setId($id) {
@@ -40,12 +40,12 @@ class Liste {
         $this->name = $name;
     }
 
-    public function ajouterTache($tache) {
-        $tabTaches[] = $tabTaches;
+    public function addTask($task) {
+        $tasks[] = $tasks;
     }
 
-    public function supprimerTache($tache) {
-        unset($tabTaches[array_search($tache, $tabTaches)]);
+    public function removeTask($task) {
+        unset($tasks[array_search($task, $tasks)]);
     }
 }
 

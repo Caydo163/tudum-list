@@ -2,22 +2,21 @@
 
 // require('Connexion.php');
 
-class ListeGateway {
+class ListGateway {
 
     private $con;  
 
     public function __construct($con) {
         $this->con = $con;
-        // $this->con = new Connexion($dsn, $username, $password);
     }
 
-    public function getAllListe() {
+    public function getAllList() {
         $query = "SELECT * FROM List"; 
         $this->con->executeQuery($query);
         return $this->con->getResults();
     }
 
-    public function ajouterListe($liste) {
+    public function addList($liste) {
         if($liste->getOwner == -1) {
             $query = "INSERT INTO List (name, owner) VALUES (:name, -1);"; 
             $this->con->executeQuery($query, array(':name' => array($liste->getName(), PDO::PARAM_STR)) );
@@ -28,12 +27,12 @@ class ListeGateway {
         }
     }
 
-    public function supprimerListe($id) {
+    public function removeList($id) {
         $query = "DELETE FROM List WHERE id = :id;"; 
         $this->con->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT) ) );
     }
 
-    public function getAllTaches($liste) {
+    public function getAllTask($liste) {
         $query = "SELECT * FROM Task WHERE list = :id"; 
         $this->con->executeQuery($query, array(':id' => array($liste->getId(), PDO::PARAM_INT) ));
         return $this->con->getResults();

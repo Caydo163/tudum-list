@@ -1,6 +1,6 @@
 <?php
 
-$rep=__DIR__.'/../';
+$dir=__DIR__.'/../';
 
 //BD IUT
 $user= 'jucarvalhe';
@@ -8,21 +8,21 @@ $pass='achanger';
 $dsn='mysql:host=localhost;dbname=dbjucarvalhe';
 
 //BD PC
-// $user='root';
-// $pass='';
-// $dsn='mysql:host=localhost;dbname=tudum-list';
+$user='root';
+$pass='';
+$dsn='mysql:host=localhost;dbname=tudum-list';
 
 
 //Vues
-$vues['erreur']='vues/erreur.php';
-$vues['accueil']='vues/accueil.php';
-$vues['connexion']='vues/pageConnexion.php';
+$views['erreur']='view/erreur.php';
+$views['accueil']='view/accueil.php';
+$views['connexion']='view/pageConnexion.php';
 
 
 //Erreur
-$erreur['action']="L'action demandé n'existe pas";
-$erreur['pdo']='Erreur avec la base de données';
-$erreur['autres']='Une erreur est survenu';
+$errors['action']="L'action demandé n'existe pas";
+$errors['pdo']='Erreur avec la base de données';
+$errors['autres']='Une erreur est survenu';
 
 
 ?>
