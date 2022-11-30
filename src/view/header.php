@@ -12,7 +12,7 @@
             </ul>
             
             <div class="text-end">
-                <a type="button" class="btn btn-outline-light me-2" href="?action=v-connexion">Se connecter</a>
+                <a type="button" class="btn btn-outline-light me-2" href="?action=v-pageConnexion">Se connecter</a>
                 <a type="button" class="btn btn-warning" style="background-color:#E50914;border:#E50914 1px solid;">S'inscrire</a>
             </div>
         </div>

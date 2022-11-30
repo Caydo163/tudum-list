@@ -9,14 +9,17 @@ class UserController {
         $this->con = new Connexion($dsn, $user, $pass);
         $this->frontController = $fc;
 
-        //verif si user
+        if($_SESSION['role'] != 'user') {
+			require($dir.$views['connexion']);
+			exit(0);
+		}
 
         try{
 			$action=$_REQUEST['action'];
 
 			switch($action) {
-                case "u-":
-                    require($dir.$views['connexion']);
+                case "u-connexion":
+                    $this->connexion();
                     break;
 
 
@@ -48,6 +51,9 @@ class UserController {
 		//fin
 		exit(0);
     }
+
+
+
 
 }
 

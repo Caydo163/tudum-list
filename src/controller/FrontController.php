@@ -14,6 +14,7 @@ class FrontController {
         global $dsn, $user, $pass, $dir, $views, $errors;
         $this->con = new Connexion($dsn, $user, $pass);
         session_start();
+        $_SESSION["role"] = "visitor";
 
         try{
 			switch(explode("-",$_REQUEST['action'])[0]) {

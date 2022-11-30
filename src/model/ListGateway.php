@@ -17,7 +17,7 @@ class ListGateway {
             } else{
                 $owner = $list['owner'];
             } 
-            $lists[] = new Liste($list['name'],$owner,$list['id'],);
+            $lists[] = new Liste(utf8_encode($list['name']),$owner,$list['id'],);
         }
         return $lists;
     }
@@ -38,11 +38,11 @@ class ListGateway {
         $this->con->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT) ) );
     }
 
-    public function getAllTask($liste) {
-        $query = "SELECT * FROM Task WHERE list = :id"; 
-        $this->con->executeQuery($query, array(':id' => array($liste->getId(), PDO::PARAM_INT) ));
-        return $this->con->getResults();
-    }
+    // public function getAllTask($liste) {
+    //     $query = "SELECT * FROM Task WHERE list = :id"; 
+    //     $this->con->executeQuery($query, array(':id' => array($liste->getId(), PDO::PARAM_INT) ));
+    //     return $this->con->getResults();
+    // }
 
 }
 

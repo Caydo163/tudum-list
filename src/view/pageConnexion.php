@@ -8,18 +8,20 @@
         <?php require('header.php'); ?>
         
         <body>
-            <form>
-            <div class="form-floating mb-3">
-  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-  <label for="floatingInput">Addresse mail</label>
-</div>
-<div class="form-floating">
-  <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-  <label for="floatingPassword">Mot de passe</label>
-</div>
-    <button type="submit" class="btn btn-warning" style="background-color:#E50914;border:#E50914 1px solid;">Se connecter</button>
-    </form>
+            <form method="POST">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingInput" name="login">
+                    <label for="floatingInput">Login</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" name="password">
+                    <label for="floatingPassword">Mot de passe</label>
+                </div>
+                <input type="hidden" name="action" value="v-connexion">
+                <button type="submit" class="btn btn-warning" style="background-color:#E50914;border:#E50914 1px solid;">Se connecter</button>
+            </form>
         </body>
+
         <footer>
                 
         </footer>

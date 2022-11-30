@@ -11,7 +11,7 @@ class VisitorController {
 
         try{
 			switch($_REQUEST['action']) {
-                case "v-connexion":
+                case "v-pageConnexion":
                     require($dir.$views['connexion']);
                     break;
 
@@ -29,6 +29,10 @@ class VisitorController {
 
                 case "v-remove_list":
                     $this->removeList();
+                    break;
+                
+                case "v-connexion":
+                    $this->connexion();
                     break;
 
 				//mauvaise action
@@ -48,11 +52,11 @@ class VisitorController {
 
 		}
 		catch (Exception $e2)
-			{
+        {
             $typeErreur = $errors['autres'];
             $detailErreur = $e2->getMessage();
-			require ($dir.$views['erreur']);
-			}
+            require ($dir.$views['erreur']);
+        }
 
 
 		//fin
@@ -62,7 +66,7 @@ class VisitorController {
     public function addTask() {
         global $dir, $views;
         $task_gw = new TaskGateway($this->con);
-        $task = new Task($_REQUEST['list'], $_REQUEST['task']);
+        $task = new Task($_REQUEST['list'], strip_tags($_REQUEST['task']));
         $task_gw->addTask($task);
         $this->frontController->initialisation();
     }
@@ -70,7 +74,7 @@ class VisitorController {
     public function addList() {
         global $dir, $views;
         $list_gw = new ListGateway($this->con);
-        $list = new Liste($_REQUEST['name']);
+        $list = new Liste(strip_tags($_REQUEST['name']));
         $list_gw->addList($list);
         $this->frontController->initialisation();
     }
@@ -86,6 +90,23 @@ class VisitorController {
         $list_gw->removeList($_REQUEST['id']);
         $this->frontController->initialisation();
     }
+
+    public function connexion() {
+		global $dir, $views;
+        require($dir."model/User.php");
+        require($dir."model/UserGateway.php");
+        $user_gw = new UserGateway($this->con);
+        $user = new User(strip_tags($_REQUEST['login']),strip_tags($_REQUEST['password']));
+        $userBD = $user_gw->getUser($user->getLogin());
+		if(password_verify($_REQUEST['password'], $userBD->getHashPassword())) {
+			$this->frontController->initialisation();
+		}
+		else {
+			require($dir.$views['erreur']);
+		}
+        $_SESSION['role'] = 'user';
+        $_SESSION['login'] = $userBD->getLogin();
+	}
 }
 
 ?>
