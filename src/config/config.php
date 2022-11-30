@@ -2,7 +2,7 @@
 
 $dir=__DIR__.'/../';
 
-//BD IUT
+//BD IUT 
 $user= 'jucarvalhe';
 $pass='achanger';
 $dsn='mysql:host=localhost;dbname=dbjucarvalhe';
