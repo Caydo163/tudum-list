@@ -17,7 +17,7 @@ class ListGateway {
             } else{
                 $owner = $list['owner'];
             } 
-            $lists[] = new Liste(utf8_encode($list['name']),$owner,$list['id'],);
+            $lists[] = new Liste($list['name'],$owner,$list['id'],);
         }
         return $lists;
     }

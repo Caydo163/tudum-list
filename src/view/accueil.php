@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>TUDUM-LIST</title>
+        <meta charset="utf-8" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
         <link href="view/style.css" rel="stylesheet">
@@ -18,7 +19,7 @@
               <form class="d-flex justify-content-flex-start align-items-center" method="POST">
                   <div class="col">
                     <input type="text" class="form-control" placeholder="Nouvelle liste ..." name="name" required>
-                    <input type="hidden" name="action" value="add_list">
+                    <input type="hidden" name="action" value="v-add_list">
                   </div>
                   <div class="col">
                     
@@ -44,7 +45,7 @@
 
           <div class="row justify-content-between">
           <h6 class="col-auto">'.$l->getName().'</h6>
-          <a class="col-auto" href="?action=remove_list&id='.$l->getId().'" title="Remove list">
+          <a class="col-auto" href="?action=v-remove_list&id='.$l->getId().'" title="Remove list">
           <i class="bi bi-trash3" style="color:white"></i>
         </a>
         </div>
@@ -65,7 +66,7 @@
 
               
                 echo '</div>
-                <a href="?action=remove_task&id='.$t->getId().'" title="Remove task">
+                <a href="?action=v-remove_task&id='.$t->getId().'" title="Remove task">
                   <i class="bi bi-trash3" style="color:#E50914"></i>
                 </a>
               </li>';
@@ -76,7 +77,7 @@
             echo '</ul>
             <form class="d-flex justify-content-center align-items-center mt-4" method="POST">
                 <input type="text" class="form-control" placeholder="Nouvelle tâche ..." name="task" required>
-                <input type="hidden" name="action" value="add_task">
+                <input type="hidden" name="action" value="v-add_task">
                 <input type="hidden" name="list" value="'.$l->getId().'">
               <button type="submit" class="btn btn-warning ms-2" style="background-color:#E50914;border:#E50914 1px solid;">Ajouter</button>
             </form>
