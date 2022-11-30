@@ -64,7 +64,6 @@ class FrontController {
 		catch (Exception $e2)
 			{
             $typeErreur = $errors['autres'];
-            echo $e2->getMessage();
             $detailErreur = $e2->getMessage();
 			require ($dir.$views['erreur']);
 			}
@@ -82,7 +81,7 @@ class FrontController {
     public function addTask() {
         global $dir, $views;
         $task_gw = new TaskGateway($this->con);
-        $task = new Task(0, $_REQUEST['list'], $_REQUEST['task']);
+        $task = new Task($_REQUEST['list'], $_REQUEST['task']);
         $task_gw->addTask($task);
         $this->initialisation();
     }
@@ -90,7 +89,7 @@ class FrontController {
     public function addList() {
         global $dir, $views;
         $list_gw = new ListGateway($this->con);
-        $list = new Liste(0, $_REQUEST['name']);
+        $list = new Liste($_REQUEST['name']);
         $list_gw->addList($list);
         $this->initialisation();
     }

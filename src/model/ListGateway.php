@@ -22,14 +22,14 @@ class ListGateway {
         return $lists;
     }
 
-    public function addList($liste) {
-        if($liste->getOwner == -1) {
-            $query = "INSERT INTO List (name, owner) VALUES (:name, -1);"; 
-            $this->con->executeQuery($query, array(':name' => array($liste->getName(), PDO::PARAM_STR)) );
+    public function addList($list) {
+        if($list->getOwner() == -1) {
+            $query = "INSERT INTO List (name) VALUES (:name);"; 
+            $this->con->executeQuery($query, array(':name' => array($list->getName(), PDO::PARAM_STR)) );
         }
         else {
             $query = "INSERT INTO List (name, owner) VALUES (:name, :owner);"; 
-            $this->con->executeQuery($query, array(':name' => array($liste->getName(), PDO::PARAM_STR),':owner' => array($liste->getOwner(), PDO::PARAM_INT) ) );
+            $this->con->executeQuery($query, array(':name' => array($list->getName(), PDO::PARAM_STR),':owner' => array($list->getOwner(), PDO::PARAM_INT) ) );
         }
     }
 
