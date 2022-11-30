@@ -2,15 +2,15 @@
 
 $dir=__DIR__.'/../';
 
-//BD IUT
+//BD IUT 
 $user= 'jucarvalhe';
 $pass='achanger';
 $dsn='mysql:host=localhost;dbname=dbjucarvalhe';
 
 //BD PC
-$user='root';
-$pass='';
-$dsn='mysql:host=localhost;dbname=tudum-list';
+// $user='root';
+// $pass='';
+// $dsn='mysql:host=localhost;dbname=tudum-list';
 
 
 //Vues

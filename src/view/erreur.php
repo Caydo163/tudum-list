@@ -15,10 +15,10 @@
                 <h1>TUDUM-LIST</h1>   
                 <h4>Erreur</h4>
                 <p>
-                    Coucou je suis un message d'erreur personnalisé (mais je suis un peu con je marche pas encore)
+                    Il semblerait que vous ayez rencontré un problème (plus de détails ci-dessous)
                 </p>
                 <?php
-                    echo "$typeErreur";
+                    echo "$typeErreur / ";
                     echo "$detailErreur";
 
                 ?>

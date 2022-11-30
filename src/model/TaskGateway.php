@@ -38,7 +38,7 @@ class TaskGateway {
 
     public function addTask($tache) {
         $query = "INSERT INTO Task (name, list) VALUES (:name, :list);"; 
-        $this->con->executeQuery($query, array(':name' => array($tache->getNom(), PDO::PARAM_STR),':list' => array($tache->getListe(), PDO::PARAM_INT) ) );
+        $this->con->executeQuery($query, array(':name' => array($tache->getName(), PDO::PARAM_STR),':list' => array($tache->getList(), PDO::PARAM_INT) ) );
     }
 
     public function removeTask($id) {
