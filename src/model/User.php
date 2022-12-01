@@ -3,11 +3,11 @@
 class User {
     private $id;
     private $login;
-    private $hashPassword;
+    private $password;
 
     public function __construct($login, $password, $id = -1) {
         $this->login = $login;
-        $this->hashPassword = $password;
+        $this->password = $password;
         $this->id = $id;
     }
 
@@ -15,8 +15,12 @@ class User {
         return $this->login;
     }
 
-    public function getHashPassword() {
-        return $this->hashPassword;
+    public function getPassword() {
+        return $this->password;
+    }
+
+    public function getId() {
+        return $this->id;
     }
 }
 

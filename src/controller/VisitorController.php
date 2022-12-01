@@ -95,17 +95,24 @@ class VisitorController {
 		global $dir, $views;
         require($dir."model/User.php");
         require($dir."model/UserGateway.php");
+        require($dir."NonExistingAction.php");
         $user_gw = new UserGateway($this->con);
-        $user = new User(strip_tags($_REQUEST['login']),strip_tags($_REQUEST['password']));
-        $userBD = $user_gw->getUser($user->getLogin());
-		if(password_verify($_REQUEST['password'], $userBD->getHashPassword())) {
-			$this->frontController->initialisation();
-		}
-		else {
-			require($dir.$views['erreur']);
-		}
-        $_SESSION['role'] = 'user';
-        $_SESSION['login'] = $userBD->getLogin();
+
+        // $user = new User(strip_tags($_REQUEST['login']),strip_tags($_REQUEST['password']));
+        $user = $user_gw->getUserByLogin($_REQUEST['login']);
+        if($user != NULL) {
+            if(password_verify($_REQUEST['password'], $user->getPassword())) {
+                $_SESSION['role'] = 'user';
+                $_SESSION['login'] = $user->getLogin();
+                $this->frontController->initialisation();
+            }
+            else {
+                throw new NonExistingAction("Mot de passe incorrect");
+            }
+        }
+        else {
+            throw new NonExistingAction("Utilisateur inconnu");
+        }
 	}
 }
 

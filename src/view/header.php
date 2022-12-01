@@ -7,8 +7,8 @@
             </a>
             
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 text-secondary">Listes publiques</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Listes privées</a></li>
+                <li><a href="?action=" class="nav-link px-2 text-secondary">Listes publiques</a></li>
+                <li><a href="?action=u-list" class="nav-link px-2 text-white">Listes privées</a></li>
             </ul>
             
             <div class="text-end">

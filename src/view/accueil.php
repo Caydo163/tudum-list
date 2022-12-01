@@ -19,7 +19,7 @@
               <form class="d-flex justify-content-flex-start align-items-center" method="POST">
                   <div class="col">
                     <input type="text" class="form-control" placeholder="Nouvelle liste ..." name="name" required>
-                    <input type="hidden" name="action" value="v-add_list">
+                    <input type="hidden" name="action" value="<?= ($public) ? 'v-add_list' : 'u-add_list' ?>">
                   </div>
                   <div class="col">
                     
@@ -36,7 +36,6 @@
 
           
           <?php
-          $cpt = 4;
           Foreach ($lists as $l) {
             echo '
             <div class="col-auto">
@@ -44,9 +43,15 @@
           <div class="card-body p-3">
 
           <div class="row justify-content-between">
-          <h6 class="col-auto">'.$l->getName().'</h6>
-          <a class="col-auto" href="?action=v-remove_list&id='.$l->getId().'" title="Remove list">
-          <i class="bi bi-trash3" style="color:white"></i>
+          <h6 class="col-auto">'.$l->getName().'</h6>';
+
+          if ($public) {
+            echo '<a class="col-auto" href="?action=v-remove_list&id='.$l->getId().'" title="Remove list">';
+          } else {
+            echo '<a class="col-auto" href="?action=u-remove_list&id='.$l->getId().'" title="Remove list">';
+          }
+          
+          echo '<i class="bi bi-trash3" style="color:white"></i>
         </a>
         </div>
           <br>
@@ -65,9 +70,17 @@
               }   
 
               
-                echo '</div>
-                <a href="?action=v-remove_task&id='.$t->getId().'" title="Remove task">
-                  <i class="bi bi-trash3" style="color:#E50914"></i>
+                echo '</div>';
+
+                if ($public) {
+                  echo '<a href="?action=v-remove_task&id='.$t->getId().'" title="Remove task">';
+                } else {
+                  echo '<a href="?action=u-remove_task&id='.$t->getId().'" title="Remove task">';
+                }
+                
+                
+                
+                echo '<i class="bi bi-trash3" style="color:#E50914"></i>
                 </a>
               </li>';
               
@@ -76,9 +89,16 @@
             
             echo '</ul>
             <form class="d-flex justify-content-center align-items-center mt-4" method="POST">
-                <input type="text" class="form-control" placeholder="Nouvelle tâche ..." name="task" required>
-                <input type="hidden" name="action" value="v-add_task">
-                <input type="hidden" name="list" value="'.$l->getId().'">
+                <input type="text" class="form-control" placeholder="Nouvelle tâche ..." name="task" required>';
+
+                if ($public) {
+                  echo '<input type="hidden" name="action" value="v-add_task">';
+                } else {
+                  echo '<input type="hidden" name="action" value="u-add_task">';
+                }
+                
+
+                echo '<input type="hidden" name="list" value="'.$l->getId().'">
               <button type="submit" class="btn btn-warning ms-2" style="background-color:#E50914;border:#E50914 1px solid;">Ajouter</button>
             </form>
             </div>

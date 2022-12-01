@@ -14,7 +14,6 @@ class FrontController {
         global $dsn, $user, $pass, $dir, $views, $errors;
         $this->con = new Connexion($dsn, $user, $pass);
         session_start();
-        $_SESSION["role"] = "visitor";
 
         try{
 			switch(explode("-",$_REQUEST['action'])[0]) {
@@ -61,7 +60,7 @@ class FrontController {
     }
 
 
-    public function initialisation() {
+    public function initialisation($public = true) {
         global $dir, $views;
         $list_gw = new ListGateway($this->con);
         $task_gw = new TaskGateway($this->con);

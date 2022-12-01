@@ -1,5 +1,7 @@
 <?php 
 
+require($dir."model/User.php");
+
 class UserController {
     private $con;
     private $frontController;
@@ -18,9 +20,13 @@ class UserController {
 			$action=$_REQUEST['action'];
 
 			switch($action) {
-                case "u-connexion":
-                    $this->connexion();
+                case "u-list":
+					$this->frontController->initialisation(false);
                     break;
+
+				case "u-add_list":
+					$this->addList();
+					break;
 
 
 
@@ -52,6 +58,20 @@ class UserController {
 		exit(0);
     }
 
+	public function user() {
+		global $dir;
+        require($dir."model/UserGateway.php");
+        $user_gw = new UserGateway($this->con);
+        return $user_gw->getUserByLogin($_SESSION['login']);
+	}
+
+	public function addList() {
+        global $dir, $views;
+        $list_gw = new ListGateway($this->con);
+        $list = new Liste(strip_tags($_REQUEST['name']),$this->user()->getId());
+        $list_gw->addList($list);
+        $this->frontController->initialisation(false);
+    }
 
 
 
