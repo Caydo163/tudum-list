@@ -65,7 +65,7 @@ class FrontController {
         $list_gw = new ListGateway($this->con);
         $task_gw = new TaskGateway($this->con);
         
-        $lists = $list_gw->getAllList();
+        $lists = $list_gw->getAllPublicLists();
         foreach ($lists as $l) {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);
         }

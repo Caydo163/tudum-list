@@ -8,16 +8,25 @@ class ListGateway {
         $this->con = $con;
     }
 
-    public function getAllList() {
-        $query = "SELECT * FROM List"; 
+    public function getAllPublicLists() {
+        $query = "SELECT * FROM List WHERE owner IS NULL"; 
         $this->con->executeQuery($query);
         foreach ($this->con->getResults() as $list) {
-            if($list['owner'] == NULL){
-                $owner = -1;
-            } else{
-                $owner = $list['owner'];
-            } 
-            $lists[] = new Liste(utf8_encode($list['name']),$owner,$list['id'],);
+            // if($list['owner'] == NULL){
+            //     $owner = -1;
+            // } else{
+            //     $owner = $list['owner'];
+            // } 
+            $lists[] = new Liste(utf8_encode($list['name']),-1,$list['id'],);
+        }
+        return $lists;
+    }
+
+    public function getAllUserLists($user) {
+        $query = "SELECT * FROM List WHERE owner = :owner"; 
+        $this->con->executeQuery($query, array(':owner' => array($user->getId(), PDO::PARAM_STR)));
+        foreach ($this->con->getResults() as $list) {
+            $lists[] = new Liste(utf8_encode($list['name']),$list['owner'],$list['id'],);
         }
         return $lists;
     }

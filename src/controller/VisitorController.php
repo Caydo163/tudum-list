@@ -107,12 +107,15 @@ class VisitorController {
                 $this->frontController->initialisation();
             }
             else {
-                throw new NonExistingAction("Mot de passe incorrect");
+                // throw new NonExistingAction("Mot de passe incorrect");
+                $errorMessage = 'Mot de passe incorrect';
+                $login = $_REQUEST['login'];
+                require($dir.$views['connexion']);
             }
         }
         else {
-            throw new NonExistingAction("Utilisateur inconnu");
-        }
+            $errorMessage = 'Utilisateur inconnu';
+            require($dir.$views['connexion']);        }
 	}
 }
 

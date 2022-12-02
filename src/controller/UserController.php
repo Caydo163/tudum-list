@@ -20,12 +20,16 @@ class UserController {
 			$action=$_REQUEST['action'];
 
 			switch($action) {
-                case "u-list":
-					$this->frontController->initialisation(false);
+                case "u-private_list":
+					$this->privateListPage();
                     break;
 
 				case "u-add_list":
 					$this->addList();
+					break;
+
+				case "u-deconnexion":
+					$this->deconnexion();
 					break;
 
 
@@ -70,7 +74,27 @@ class UserController {
         $list_gw = new ListGateway($this->con);
         $list = new Liste(strip_tags($_REQUEST['name']),$this->user()->getId());
         $list_gw->addList($list);
-        $this->frontController->initialisation(false);
+        $this->initialisation();
+    }
+
+	public function deconnexion() {
+		session_unset();
+		session_destroy();
+		$_SESSION = array();
+		$this->frontController->initialisation();
+	}
+
+	public function privateListPage() {
+        global $dir, $views;
+        $list_gw = new ListGateway($this->con);
+        $task_gw = new TaskGateway($this->con);
+        
+        $lists = $list_gw->getAllUserLists($this->user());
+        foreach ($lists as $l) {
+            $tasks[$l->getId()] = $task_gw->getTasksList($l);
+        }
+		$public = false;
+        require($dir.$views['accueil']);
     }
 
 

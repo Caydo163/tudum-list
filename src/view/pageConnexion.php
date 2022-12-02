@@ -1,3 +1,4 @@
+<?php $public = true ?>
 <html>
     <head>
         <title>TUDUM-LIST</title>
@@ -8,9 +9,10 @@
         <?php require('header.php'); ?>
         
         <body>
+            <?= (isset($errorMessage)) ? '<h3 style="color:white">'.$errorMessage.'</h3>' : null ?>
             <form method="POST">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingInput" name="login">
+                    <input type="text" class="form-control" id="floatingInput" name="login" value="<?= (isset($login)) ? $login : null ?>">
                     <label for="floatingInput">Login</label>
                 </div>
                 <div class="form-floating">

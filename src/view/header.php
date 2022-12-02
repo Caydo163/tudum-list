@@ -7,12 +7,12 @@
             </a>
             
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="?action=" class="nav-link px-2 text-secondary">Listes publiques</a></li>
-                <li><a href="?action=u-list" class="nav-link px-2 text-white">Listes privées</a></li>
+                <li><a href="?action=" class="nav-link px-2 text-<?= ($public) ? 'secondary' : 'white' ?>">Listes publiques</a></li>
+                <li><a href="?action=u-private_list" class="nav-link px-2 text-<?= ($public) ? 'white' : 'secondary' ?>">Listes privées</a></li>
             </ul>
             
             <div class="text-end">
-                <a type="button" class="btn btn-outline-light me-2" href="?action=v-pageConnexion">Se connecter</a>
+                <a type="button" class="btn btn-outline-light me-2" href="?action=<?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? 'u-deconnexion' : 'v-pageConnexion' ?>"><?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? 'Se déconnecter' : 'Se connecter' ?></a>
                 <a type="button" class="btn btn-warning" style="background-color:#E50914;border:#E50914 1px solid;">S'inscrire</a>
             </div>
         </div>
