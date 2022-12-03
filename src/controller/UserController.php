@@ -1,6 +1,7 @@
 <?php 
 
 require($dir."model/User.php");
+require($dir."model/UserGateway.php");
 
 class UserController {
     private $con;
@@ -12,7 +13,7 @@ class UserController {
         $this->frontController = $fc;
 
         if($_SESSION['role'] != 'user') {
-			require($dir.$views['connexion']);
+			require($dir.$views['account']);
 			exit(0);
 		}
 
@@ -26,6 +27,18 @@ class UserController {
 
 				case "u-add_list":
 					$this->addList();
+					break;
+
+				case "u-remove_list":
+					$this->removeList();
+					break;
+				
+				case "u-add_task":
+					$this->addTask();
+					break;
+
+				case "u-remove_task":
+					$this->removeTask();
 					break;
 
 				case "u-deconnexion":
@@ -64,7 +77,6 @@ class UserController {
 
 	public function user() {
 		global $dir;
-        require($dir."model/UserGateway.php");
         $user_gw = new UserGateway($this->con);
         return $user_gw->getUserByLogin($_SESSION['login']);
 	}
@@ -74,7 +86,26 @@ class UserController {
         $list_gw = new ListGateway($this->con);
         $list = new Liste(strip_tags($_REQUEST['name']),$this->user()->getId());
         $list_gw->addList($list);
-        $this->initialisation();
+        $this->privateListPage();
+    }
+	
+	public function removeList() {
+		$list_gw = new ListGateway($this->con);
+		$list_gw->removeList($_REQUEST['id']);
+		$this->privateListPage();
+	}
+
+	public function removeTask() {
+        $task_gw = new TaskGateway($this->con);
+        $task_gw->removeTask($_REQUEST['id']);
+		$this->privateListPage();
+    }
+
+	public function addTask() {
+        $task_gw = new TaskGateway($this->con);
+        $task = new Task($_REQUEST['list'], strip_tags($_REQUEST['task']));
+        $task_gw->addTask($task);
+		$this->privateListPage();
     }
 
 	public function deconnexion() {

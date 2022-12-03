@@ -12,8 +12,9 @@
             </ul>
             
             <div class="text-end">
-                <a type="button" class="btn btn-outline-light me-2" href="?action=<?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? 'u-deconnexion' : 'v-pageConnexion' ?>"><?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? 'Se déconnecter' : 'Se connecter' ?></a>
-                <a type="button" class="btn btn-warning" style="background-color:#E50914;border:#E50914 1px solid;">S'inscrire</a>
+                <!-- <a type="button" class="btn btn-outline-light me-2" href="?action=<?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? 'u-deconnexion' : 'v-pageConnexion' ?>"><?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? 'Se déconnecter' : 'Se connecter' ?></a>
+                <a type="button" class="btn btn-warning" style="background-color:#E50914;border:#E50914 1px solid;" href="?action=v-pageConnexion">S'inscrire</a> -->
+                <a href="?action=v-account"><i class="bi bi-person-circle" style="color:white;font-size:2.5em;"></i></a>
             </div>
         </div>
     </div>

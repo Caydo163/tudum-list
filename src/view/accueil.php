@@ -63,10 +63,10 @@
               <div class="d-flex align-items-center">';
                   
               if($t->getAchieve() == false){
-                echo '<input class="form-check-input me-2" type="checkbox"><label>'.$t->getName().'</label>';
+                echo '<input class="form-check-input my-0" type="checkbox"><label class="mx-2">'.$t->getName().'</label>';
 
               } else{
-                echo '<input class="form-check-input me-2" type="checkbox" checked><label><strike>'.$t->getName().'</strike></label>';
+                echo '<input class="form-check-input my-0" type="checkbox" checked><label class="mx-2"><strike>'.$t->getName().'</strike></label>';
               }   
 
               

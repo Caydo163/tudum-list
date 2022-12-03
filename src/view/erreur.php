@@ -18,10 +18,10 @@
                     Il semblerait que vous ayez rencontré un problème (plus de détails ci-dessous)
                 </p>
                 <?php
-                    echo "$typeErreur / ";
-                    echo "$detailErreur";
-
+                    echo "<h3>$typeErreur</h3> <br>";
+                    echo "<p>$detailErreur</p>";
                 ?>
+                <a href="?action=">Revenir sur le site</a>
                 
                 </div>
             </div>

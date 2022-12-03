@@ -16,6 +16,11 @@ class UserGateway {
         }
         return new User(utf8_encode($user[0]['login']), $user[0]['password'],$user[0]['id']);
     }
+
+    public function addUser($user) {
+        $query = "INSERT INTO User (login, password) VALUES (:login, :password);"; 
+        $this->con->executeQuery($query, array(':login' => array($user->getLogin(), PDO::PARAM_STR), ':password' => array($user->getPassword(), PDO::PARAM_STR)) );
+    }
 }
 
 ?>

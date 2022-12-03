@@ -16,7 +16,7 @@ $dsn='mysql:host=localhost;dbname=tudum-list';
 //Vues
 $views['erreur']='view/erreur.php';
 $views['accueil']='view/accueil.php';
-$views['connexion']='view/pageConnexion.php';
+$views['account']='view/account.php';
 
 
 //Erreur

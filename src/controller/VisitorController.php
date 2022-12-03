@@ -11,8 +11,8 @@ class VisitorController {
 
         try{
 			switch($_REQUEST['action']) {
-                case "v-pageConnexion":
-                    require($dir.$views['connexion']);
+                case "v-account":
+                    require($dir.$views['account']);
                     break;
 
                 case "v-add_task":
@@ -33,6 +33,10 @@ class VisitorController {
                 
                 case "v-connexion":
                     $this->connexion();
+                    break;
+
+                case "v-inscription":
+                    $this->inscription();
                     break;
 
 				//mauvaise action
@@ -64,7 +68,6 @@ class VisitorController {
     }
 
     public function addTask() {
-        global $dir, $views;
         $task_gw = new TaskGateway($this->con);
         $task = new Task($_REQUEST['list'], strip_tags($_REQUEST['task']));
         $task_gw->addTask($task);
@@ -72,7 +75,6 @@ class VisitorController {
     }
 
     public function addList() {
-        global $dir, $views;
         $list_gw = new ListGateway($this->con);
         $list = new Liste(strip_tags($_REQUEST['name']));
         $list_gw->addList($list);
@@ -98,25 +100,44 @@ class VisitorController {
         require($dir."NonExistingAction.php");
         $user_gw = new UserGateway($this->con);
 
-        // $user = new User(strip_tags($_REQUEST['login']),strip_tags($_REQUEST['password']));
-        $user = $user_gw->getUserByLogin($_REQUEST['login']);
+        $user = $user_gw->getUserByLogin(strip_tags($_REQUEST['login']));
         if($user != NULL) {
-            if(password_verify($_REQUEST['password'], $user->getPassword())) {
+            if(password_verify(strip_tags($_REQUEST['password']), $user->getPassword())) {
                 $_SESSION['role'] = 'user';
                 $_SESSION['login'] = $user->getLogin();
                 $this->frontController->initialisation();
             }
             else {
-                // throw new NonExistingAction("Mot de passe incorrect");
-                $errorMessage = 'Mot de passe incorrect';
-                $login = $_REQUEST['login'];
-                require($dir.$views['connexion']);
+                $errorMessageConnexion = 'Mot de passe incorrect';
+                $login = strip_tags($_REQUEST['login']);
+                require($dir.$views['account']);
             }
         }
         else {
-            $errorMessage = 'Utilisateur inconnu';
-            require($dir.$views['connexion']);        }
+            $errorMessageConnexion = 'Utilisateur inconnu';
+            require($dir.$views['account']);        }
 	}
+
+    public function inscription() {
+        global $dir, $views;
+        require($dir."model/User.php");
+        require($dir."model/UserGateway.php");
+        require($dir."NonExistingAction.php");
+        $user_gw = new UserGateway($this->con);
+
+        $user = $user_gw->getUserByLogin($_REQUEST['login']);
+        if($user == NULL) {
+            $user = new User(strip_tags($_REQUEST['login']), password_hash(strip_tags($_REQUEST['password']), PASSWORD_DEFAULT));
+            $user_gw->addUser($user);
+            $_SESSION['role'] = 'user';
+            $_SESSION['login'] = $user->getLogin();
+            $this->frontController->initialisation();
+        }
+        else {
+            $errorMessageInscription = 'Login déjà utilisé';
+            require($dir.$views['account']);       
+        }
+    }
 }
 
 ?>
