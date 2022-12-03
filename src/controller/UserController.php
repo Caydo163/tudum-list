@@ -44,7 +44,10 @@ class UserController {
 				case "u-deconnexion":
 					$this->deconnexion();
 					break;
-
+				
+				case "u-delete_account":
+					$this->deleteAccount();
+					break;
 
 
 				//mauvaise action
@@ -127,6 +130,17 @@ class UserController {
 		$public = false;
         require($dir.$views['accueil']);
     }
+
+	public function deleteAccount() {
+		$user_gw = new UserGateway($this->con);
+		$list_gw = new ListGateway($this->con);
+		$user = $this->user();
+		foreach($list_gw->getAllUserLists($user) as $l) {
+			$list_gw->removeList($l->getId());
+		}
+		$user_gw->deleteUser($user);
+		$this->deconnexion();
+	}
 
 
 

@@ -21,6 +21,11 @@ class UserGateway {
         $query = "INSERT INTO User (login, password) VALUES (:login, :password);"; 
         $this->con->executeQuery($query, array(':login' => array($user->getLogin(), PDO::PARAM_STR), ':password' => array($user->getPassword(), PDO::PARAM_STR)) );
     }
+
+    public function deleteUser($user) {
+        $query = "DELETE FROM User WHERE id = :id;"; 
+        $this->con->executeQuery($query, array(':id' => array($user->getId(), PDO::PARAM_INT)) );
+    }
 }
 
 ?>

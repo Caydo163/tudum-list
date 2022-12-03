@@ -12,10 +12,13 @@
         
         <body>
             <div class="w-50 card rounded-4 mx-auto mt-5" style="background-color: #656565;">
-                <div class="card-body p-3">            
+                <div class="card-body p-3">
+
                     <?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'user'): ?>
                         <h3 style="color:white">Connecté en tant que <?= $_SESSION['login'] ?></h3>
                         <a type="submit" class="btn btn-warning mt-3" style="background-color:#E50914;border:#E50914 1px solid;" href="?action=u-deconnexion">Se déconnecter</a>
+                        <a type="submit" class="btn btn-outline-light mt-3" href="?action=u-delete_account">Supprimer compte</a>
+                    
                     <?php else: ?>
                         <form method="POST">
                             <h3 style="color:white">Connexion</h3>
