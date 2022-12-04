@@ -1,6 +1,6 @@
 
 <header class="p-3 bg-dark text-white">
-    <div class="container-fluid" style="margin:0 5px;">
+    <div class="container-fluid mx-0 my-1">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="?action=" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <h1>TUDUM-LIST</h1>    
@@ -12,9 +12,8 @@
             </ul>
             
             <div class="text-end">
-                <!-- <a type="button" class="btn btn-outline-light me-2" href="?action=<?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? 'u-deconnexion' : 'v-pageConnexion' ?>"><?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? 'Se déconnecter' : 'Se connecter' ?></a>
-                <a type="button" class="btn btn-warning" style="background-color:#E50914;border:#E50914 1px solid;" href="?action=v-pageConnexion">S'inscrire</a> -->
-                <a href="?action=v-account"><i class="bi bi-person-circle" style="color:white;font-size:2.5em;"></i></a>
+                <a href="?action=v-account"><i class="bi bi-person-circle icon-white" style="font-size:2.5em;"></i></a>
+                <?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? '<p class="mb-0">'.$_SESSION['login'].'</p>' : null ?>
             </div>
         </div>
     </div>

@@ -1,20 +1,20 @@
 <html>
     <head>
-        <title>TUDUM-LIST</title>
-        <meta charset="utf-8" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-        <link href="view/style.css" rel="stylesheet">
+      <title>TUDUM-LIST</title>
+      <meta charset="utf-8" />
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+      <link href="view/custom.css" rel="stylesheet">
     </head>
     <body>
       
       <?php require($dir.'view/header.php');?>
         
-        <main style="background-color: #3d3939">
+        <main>
         <div class="container py-3">
         
         <div class="col-auto">
-            <div class="card rounded-4 mb-3" style="background-color: #656565;">
+            <div class="card rounded-4 mb-3">
               <div class="card-body p-3">
               <form class="d-flex justify-content-flex-start align-items-center" method="POST">
                   <div class="col">
@@ -39,7 +39,7 @@
           Foreach ($lists as $l) {
             echo '
             <div class="col-auto">
-            <div class="card rounded-4 mb-3" style="background-color: #656565;">
+            <div class="card rounded-4 mb-3">
           <div class="card-body p-3">
 
           <div class="row justify-content-between">
@@ -51,7 +51,7 @@
             echo '<a class="col-auto" href="?action=u-remove_list&id='.$l->getId().'" title="Remove list">';
           }
           
-          echo '<i class="bi bi-trash3" style="color:white"></i>
+          echo '<i class="bi bi-trash3 icon-white"></i>
         </a>
         </div>
           <br>
@@ -80,7 +80,7 @@
                 
                 
                 
-                echo '<i class="bi bi-trash3" style="color:#E50914"></i>
+                echo '<i class="bi bi-trash3 icon-red"></i>
                 </a>
               </li>';
               
@@ -99,7 +99,7 @@
                 
 
                 echo '<input type="hidden" name="list" value="'.$l->getId().'">
-              <button type="submit" class="btn btn-warning ms-2" style="background-color:#E50914;border:#E50914 1px solid;">Ajouter</button>
+              <button type="submit" class="btn btn-primary ms-2">Ajouter</button>
             </form>
             </div>
             </div>
@@ -110,8 +110,6 @@
       </div>
       </div>
         </main>
-        <footer>
-          
-        </footer>
+          <?php require('footer.php') ?>
       </body>
 </html>

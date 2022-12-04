@@ -25,6 +25,7 @@ class ListGateway {
     public function getAllUserLists($user) {
         $query = "SELECT * FROM List WHERE owner = :owner"; 
         $this->con->executeQuery($query, array(':owner' => array($user->getId(), PDO::PARAM_STR)));
+        $lists = [];
         foreach ($this->con->getResults() as $list) {
             $lists[] = new Liste(utf8_encode($list['name']),$list['owner'],$list['id'],);
         }

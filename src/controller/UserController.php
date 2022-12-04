@@ -12,7 +12,7 @@ class UserController {
         $this->con = new Connexion($dsn, $user, $pass);
         $this->frontController = $fc;
 
-        if($_SESSION['role'] != 'user') {
+        if(!isset($_SESSION['role']) || $_SESSION['role'] != 'user') {
 			require($dir.$views['account']);
 			exit(0);
 		}

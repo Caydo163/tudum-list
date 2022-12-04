@@ -47,6 +47,11 @@ class TaskGateway {
         $this->con->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT) ) );
     }
 
+    public function setAchieveTask($id, $bool) {
+        $query = "UPDATE Task SET achieve = :bool WHERE id = :id;"; 
+        $this->con->executeQuery($query, array(':bool' => array($bool, PDO::PARAM_BOOL),':id' => array($id, PDO::PARAM_INT) ) );
+    }
+
 }
 
 
