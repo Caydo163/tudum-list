@@ -94,35 +94,17 @@ class VisitorController {
     }
 
     public function connexion() {
-		global $dir, $views;
-        require($dir."model/User.php");
-        require($dir."model/UserGateway.php");
-        require($dir."NonExistingAction.php");
-        $user_gw = new UserGateway($this->con);
-
-        $user = $user_gw->getUserByLogin(strip_tags($_REQUEST['login']));
-        if($user != NULL) {
-            if(password_verify(strip_tags($_REQUEST['password']), $user->getPassword())) {
-                $_SESSION['role'] = 'user';
-                $_SESSION['login'] = $user->getLogin();
-                $this->frontController->initialisation();
-            }
-            else {
-                $errorMessageConnexion = 'Mot de passe incorrect';
-                $login = strip_tags($_REQUEST['login']);
-                require($dir.$views['account']);
-            }
+        $mdl_user = new MdlUser();
+        if($mdl_user->connexion($_REQUEST['login'],$_REQUEST['password'])) {
+            $this->frontController->initialisation();
         }
-        else {
-            $errorMessageConnexion = 'Utilisateur inconnu';
-            require($dir.$views['account']);        }
 	}
 
     public function inscription() {
         global $dir, $views;
-        require($dir."model/User.php");
-        require($dir."model/UserGateway.php");
-        require($dir."NonExistingAction.php");
+        // require($dir."model/User.php");
+        // require($dir."model/UserGateway.php");
+        // require($dir."NonExistingAction.php");
         $user_gw = new UserGateway($this->con);
 
         $user = $user_gw->getUserByLogin($_REQUEST['login']);

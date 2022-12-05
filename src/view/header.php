@@ -12,8 +12,10 @@
             </ul>
             
             <div class="text-end">
-                <a href="?action=v-account"><i class="bi bi-person-circle icon-white" style="font-size:2.5em;"></i></a>
-                <?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? '<p class="mb-0">'.$_SESSION['login'].'</p>' : null ?>
+                <a href="?action=v-account">
+                    <i class="bi bi-person-circle icon-white" style="font-size:2.5em;"></i></a>
+                    <?= (isset($_SESSION['role']) && $_SESSION['role'] == 'user') ? '<p class="mb-0 text-center">'.$_SESSION['login'].'</p>' : null ?>
+                
             </div>
         </div>
     </div>

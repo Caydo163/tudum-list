@@ -1,8 +1,5 @@
 <?php 
 
-require($dir."model/User.php");
-require($dir."model/UserGateway.php");
-
 class UserController {
     private $con;
     private $frontController;
@@ -11,11 +8,14 @@ class UserController {
         global $dsn, $user, $pass, $dir, $views, $errors;
         $this->con = new Connexion($dsn, $user, $pass);
         $this->frontController = $fc;
-
-        if(!isset($_SESSION['role']) || $_SESSION['role'] != 'user') {
+		
+		$mdl_user = new MdlUser();
+		
+		if(!$mdl_user->isUser()) {
 			require($dir.$views['account']);
 			exit(0);
 		}
+		
 
         try{
 			$action=$_REQUEST['action'];
@@ -79,7 +79,6 @@ class UserController {
     }
 
 	public function user() {
-		global $dir;
         $user_gw = new UserGateway($this->con);
         return $user_gw->getUserByLogin($_SESSION['login']);
 	}
@@ -112,9 +111,8 @@ class UserController {
     }
 
 	public function deconnexion() {
-		session_unset();
-		session_destroy();
-		$_SESSION = array();
+		$mdl_user = new MdlUser();
+		$mdl_user->deconnexion();
 		$this->frontController->initialisation();
 	}
 
@@ -132,14 +130,11 @@ class UserController {
     }
 
 	public function deleteAccount() {
-		$user_gw = new UserGateway($this->con);
-		$list_gw = new ListGateway($this->con);
-		$user = $this->user();
-		foreach($list_gw->getAllUserLists($user) as $l) {
-			$list_gw->removeList($l->getId());
-		}
-		$user_gw->deleteUser($user);
-		$this->deconnexion();
+		$mdl_user = new MdlUser();
+		$mdl_user->deleteAccount();
+		$mdl_user->deconnexion();
+		$this->frontController->initialisation();
+
 	}
 
 

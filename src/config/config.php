@@ -6,6 +6,7 @@ $dir=__DIR__.'/../';
 $user= 'jucarvalhe';
 $pass='achanger';
 $dsn='mysql:host=localhost;dbname=dbjucarvalhe';
+$con=null;
 
 //BD PC
 $user='root';

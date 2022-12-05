@@ -43,12 +43,12 @@
                         <form method="POST">
                             <h3 class="text-white">Connexion</h3>
                             <div class="form-floating mb-3 mt-2">
-                                <input type="text" class="form-control" id="floatingInput" name="login" <?= (isset($login)) ? 'value="'.$login.'"' : '" autofocus' ?> required>
+                                <input type="text" class="form-control" id="floatingInput" name="login" <?= (isset($loginAutocompletion)) ? 'value="'.$loginAutocompletion.'"' : '" autofocus' ?> required>
                                 <label for="floatingInput">Login</label>
                             </div>
                             <input type="hidden" name="action" value="v-connexion">
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="floatingPassword" name="password" required <?= (isset($login)) ? 'autofocus' : null ?>>
+                                <input type="password" class="form-control" id="floatingPassword" name="password" required <?= (isset($loginAutocompletion)) ? 'autofocus' : null ?>>
                                 <label for="floatingPassword">Mot de passe</label>
                             </div>
                             <?= (isset($errorMessageConnexion)) ? '<p class="text-white">'.$errorMessageConnexion.'</p>' : null ?>

@@ -1,18 +1,19 @@
 <?php
 
-require($dir."Connexion.php");
-require($dir."model/ListGateway.php");
-require($dir."model/Liste.php");
-require($dir."model/Task.php");
-require($dir."model/TaskGateway.php");
+// require($dir."Connexion.php");
+// require($dir."model/ListGateway.php");
+// require($dir."model/Liste.php");
+// require($dir."model/Task.php");
+// require($dir."model/TaskGateway.php");
 
 
 class FrontController {
     private $con;
     
     public function __construct() {
-        global $dsn, $user, $pass, $dir, $views, $errors;
-        $this->con = new Connexion($dsn, $user, $pass);
+        global $dsn, $user, $pass, $dir, $views, $errors,$con;
+        $con = new Connexion($dsn, $user, $pass);
+        $this->con = $con;
         session_start();
 
         try{

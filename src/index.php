@@ -1,9 +1,9 @@
 <?php
 require_once(__DIR__.'/config/config.php');
-require($dir.'controller/FrontController.php');
-// $con = new Connexion($dsn, $username, $password);
+require_once(__DIR__.'/config/Autoload.php');
+Autoload::charger();
+
 $fc = new FrontController();
 
-// require("vues/accueil.php");
 
 ?>
