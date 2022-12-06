@@ -31,6 +31,10 @@ class VisitorController {
                     $this->removeList();
                     break;
                 
+                case "v-valid_task":
+                    $this->validTask();
+                    break;
+                
                 case "v-connexion":
                     $this->connexion();
                     break;
@@ -90,6 +94,15 @@ class VisitorController {
     public function removeList() {
         $list_gw = new ListGateway($this->con);
         $list_gw->removeList($_REQUEST['id']);
+        $this->frontController->initialisation();
+    }
+
+    public function validTask() {
+        $task_gw = new TaskGateway($this->con);
+        // TODO : chnager filtres
+        $task = filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING);
+        $achieve = filter_var($_REQUEST['achieve'], FILTER_SANITIZE_STRING);
+        $task_gw->setAchieveTask($task, $achieve);
         $this->frontController->initialisation();
     }
 

@@ -9,9 +9,9 @@ $dsn='mysql:host=localhost;dbname=dbjucarvalhe';
 $con=null;
 
 //BD PC
-$user='root';
-$pass='';
-$dsn='mysql:host=localhost;dbname=tudum-list';
+// $user='root';
+// $pass='';
+// $dsn='mysql:host=localhost;dbname=tudum-list';
 
 
 //Vues

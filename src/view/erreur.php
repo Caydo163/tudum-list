@@ -14,10 +14,10 @@
                     Il semblerait que vous ayez rencontré un problème (plus de détails ci-dessous)
                 </p>
                 <?php
-                    if(isset($typeErreur) && !empty($typeErreur)) {
+                    if(!empty($typeErreur)) {
                         echo "<h3>$typeErreur</h3> <br>";
                     }
-                    if(isset($detailErreur) && !empty($detailErreur)) {
+                    if(!empty($detailErreur)) {
                         echo "<p>$detailErreur</p>";
                     }
                 ?>

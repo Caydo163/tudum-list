@@ -8,34 +8,30 @@
 
 
 class FrontController {
-    private $con;
     
     public function __construct() {
         global $dsn, $user, $pass, $dir, $views, $errors,$con;
-        $con = new Connexion($dsn, $user, $pass);
-        $this->con = $con;
+
         session_start();
 
         try{
+            $con = new Connexion($dsn, $user, $pass);
 			switch(explode("-",$_REQUEST['action'])[0]) {
 				case NULL:
 					$this->initialisation();
 					break;
                 
                 case "v":
-                    require($dir.'controller/VisitorController.php');
                     $vc = new VisitorController($this);
                     break;
 
                 case "u":
-                    require($dir.'controller/UserController.php');
                     $uc = new UserController($this);
                     break;
                 
 				//mauvaise action
 				default:
                 //levé exception
-                    require($dir."NonExistingAction.php");
                     throw new NonExistingAction("L'action demande n'existe pas");
 				    break;
 			}
@@ -54,17 +50,15 @@ class FrontController {
             $detailErreur = $e2->getMessage();
 			require ($dir.$views['erreur']);
 			}
-
-
 		//fin
 		exit(0);
     }
 
 
     public function initialisation($public = true) {
-        global $dir, $views;
-        $list_gw = new ListGateway($this->con);
-        $task_gw = new TaskGateway($this->con);
+        global $dir, $views, $con;
+        $list_gw = new ListGateway($con);
+        $task_gw = new TaskGateway($con);
         
         $lists = $list_gw->getAllPublicLists();
         foreach ($lists as $l) {

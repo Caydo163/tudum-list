@@ -5,6 +5,7 @@
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
       <link href="view/custom.css" rel="stylesheet">
+      <script type="text/javascript" src="view/javascript.js"></script>    
     </head>
     <body>
       
@@ -63,10 +64,10 @@
               <div class="d-flex align-items-center">';
                   
               if($t->getAchieve() == false){
-                echo '<input class="form-check-input my-0" type="checkbox"><label class="mx-2">'.$t->getName().'</label>';
+                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().')" id="'.$t->getId().'"><label class="mx-2">'.$t->getName().'</label>';
 
               } else{
-                echo '<input class="form-check-input my-0" type="checkbox" checked><label class="mx-2"><strike>'.$t->getName().'</strike></label>';
+                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().')" id="'.$t->getId().'" checked><label class="mx-2"><strike>'.$t->getName().'</strike></label>';
               }   
 
               
