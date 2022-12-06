@@ -4,7 +4,8 @@ class ListGateway {
 
     private $con;  
 
-    public function __construct($con) {
+    public function __construct() {
+        global $con;
         $this->con = $con;
     }
 
@@ -12,12 +13,7 @@ class ListGateway {
         $query = "SELECT * FROM List WHERE owner IS NULL"; 
         $this->con->executeQuery($query);
         foreach ($this->con->getResults() as $list) {
-            // if($list['owner'] == NULL){
-            //     $owner = -1;
-            // } else{
-            //     $owner = $list['owner'];
-            // } 
-            $lists[] = new Liste(utf8_encode($list['name']),-1,$list['id'],);
+            $lists[] = new Liste(utf8_encode($list['name']),-1,$list['id']);
         }
         return $lists;
     }
@@ -27,7 +23,7 @@ class ListGateway {
         $this->con->executeQuery($query, array(':owner' => array($user->getId(), PDO::PARAM_STR)));
         $lists = [];
         foreach ($this->con->getResults() as $list) {
-            $lists[] = new Liste(utf8_encode($list['name']),$list['owner'],$list['id'],);
+            $lists[] = new Liste(utf8_encode($list['name']),$list['owner'],$list['id']);
         }
         return $lists;
     }
@@ -53,6 +49,17 @@ class ListGateway {
     //     $this->con->executeQuery($query, array(':id' => array($liste->getId(), PDO::PARAM_INT) ));
     //     return $this->con->getResults();
     // }
+
+    public function getListById($id) {
+        $query = "SELECT * FROM List WHERE id = :id"; 
+        $this->con->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)));
+        if(empty($list = $this->con->getResults())) {
+            return NULL;
+        }
+        $list = $list[0];
+        $owner = ($list['owner'] == NULL) ? -1 : $list['owner'];
+        return new Liste(utf8_encode($list['name']),$owner,$list['id']);
+    }
 
 }
 

@@ -1,22 +1,22 @@
 <?php
 
 class MdlUser {
-
-
-    public function connexion($login, $password) {
-        global $dir, $views, $con;
-        // require($dir."model/User.php");
-        // require($dir."model/UserGateway.php");
-        // require($dir."NonExistingAction.php");
-        $user_gw = new UserGateway($con);        
+    public function signIn($login, $password) {
+        global $dir, $views;
+        $user_gw = new UserGateway();        
           
         $login = filter_var($login, FILTER_SANITIZE_STRING);
         $password = filter_var($password, FILTER_SANITIZE_STRING);
         $user = $user_gw->getUserByLogin($login);
         if($user != null) {
             if(password_verify($password, $user->getPassword())) {
-                $_SESSION['role'] = 'user';
-                $_SESSION['login'] = $user->getLogin();
+                if($user->getAdmin()) {
+                    $mdl_admin = new MdlAdmin();
+                    $mdl_admin->signIn($user);
+                } else {
+                    $_SESSION['role'] = 'user';
+                    $_SESSION['login'] = $user->getLogin();
+                }
                 return true;
             } else {
                 $errorMessageConnexion = 'Mot de passe incorrect';
@@ -37,22 +37,41 @@ class MdlUser {
     } 
 
     public function isUser() {
-        if(isset($_SESSION['role']) && isset($_SESSION['login']) && $_SESSION['role'] == 'user') {
+        if(isset($_SESSION['role']) && isset($_SESSION['login']) && ($_SESSION['role'] == 'user' || $_SESSION['role'] == 'admin')) {
             return true;
         }
         return false;
     }
 
     public function deleteAccount() {
-        global $con;
-        $user_gw = new UserGateway($con);
-		$list_gw = new ListGateway($con);
+        $user_gw = new UserGateway();
+		$list_gw = new ListGateway();
 		$user = $user_gw->getUserByLogin(filter_var($_SESSION['login'], FILTER_SANITIZE_STRING));
 		foreach($list_gw->getAllUserLists($user) as $l) {
 			$list_gw->removeList($l->getId());
 		}
 		$user_gw->deleteUser($user);
-    } 
+    }
+
+    public function registration($login, $password) {
+        global $dir, $views;
+        $user_gw = new UserGateway();
+        $login = filter_var($login, FILTER_SANITIZE_STRING);
+        $password = filter_var($password, FILTER_SANITIZE_STRING);
+
+        $user = $user_gw->getUserByLogin($login);
+        if($user == NULL) {
+            $user = new User($login, password_hash($password, PASSWORD_DEFAULT));
+            $user_gw->addUser($user);
+            $_SESSION['role'] = 'user';
+            $_SESSION['login'] = $user->getLogin();
+            return true;
+        }
+        else {
+            $errorMessageInscription = 'Login déjà utilisé';
+            require($dir.$views['account']);       
+        }
+    }
 }
 
 ?>

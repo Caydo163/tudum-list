@@ -5,7 +5,8 @@ class TaskGateway {
 
     private $con;  
 
-    public function __construct($con) {
+    public function __construct() {
+        global $con;
         $this->con = $con;
     }
 
@@ -50,6 +51,16 @@ class TaskGateway {
     public function setAchieveTask($id, $bool) {
         $query = "UPDATE Task SET achieve = :bool WHERE id = :id;"; 
         $this->con->executeQuery($query, array(':bool' => array($bool, PDO::PARAM_BOOL),':id' => array($id, PDO::PARAM_INT) ) );
+    }
+
+    public function getTaskById($id) {
+        $query = "SELECT * FROM Task WHERE id = :id"; 
+        $this->con->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT)));
+        if(empty($task = $this->con->getResults())) {
+            return NULL;
+        }
+        $task = $task[0];
+        return new Task(utf8_encode($task['list']),$task['name'],$task['achieve'],$task['id']);
     }
 
 }

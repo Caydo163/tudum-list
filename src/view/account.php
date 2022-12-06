@@ -15,7 +15,7 @@
             <div class="w-50 card rounded-4 mx-auto my-5">
                 <div class="card-body p-3">
 
-                    <?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'user'): ?>
+                    <?php if(isset($_SESSION['role']) && in_array($_SESSION['role'], array('user','admin'))): ?>
                         <h3 class="text-white">Connecté en tant que <?= $_SESSION['login'] ?></h3>
                         <a class="btn btn-primary mt-3" href="?action=u-deconnexion">Se déconnecter</a>
                         
@@ -46,7 +46,7 @@
                                 <input type="text" class="form-control" id="floatingInput" name="login" <?= (isset($loginAutocompletion)) ? 'value="'.$loginAutocompletion.'"' : '" autofocus' ?> required>
                                 <label for="floatingInput">Login</label>
                             </div>
-                            <input type="hidden" name="action" value="v-connexion">
+                            <input type="hidden" name="action" value="v-sign_in">
                             <div class="form-floating mb-3">
                                 <input type="password" class="form-control" id="floatingPassword" name="password" required <?= (isset($loginAutocompletion)) ? 'autofocus' : null ?>>
                                 <label for="floatingPassword">Mot de passe</label>
@@ -61,7 +61,7 @@
                                 <input type="text" class="form-control" id="floatingInput" name="login" required>
                                 <label for="floatingInput">Login</label>
                             </div>
-                            <input type="hidden" name="action" value="v-inscription">
+                            <input type="hidden" name="action" value="v-registration">
                             <div class="form-floating mb-3">
                                 <input type="password" class="form-control" id="floatingPassword" name="password" required>
                                 <label for="floatingPassword">Mot de passe</label>

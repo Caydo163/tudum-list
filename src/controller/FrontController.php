@@ -10,8 +10,7 @@
 class FrontController {
     
     public function __construct() {
-        global $dsn, $user, $pass, $dir, $views, $errors,$con;
-
+        global $dsn, $user, $pass, $dir, $views, $errors, $con;
         session_start();
 
         try{
@@ -29,36 +28,36 @@ class FrontController {
                     $uc = new UserController($this);
                     break;
                 
-				//mauvaise action
-				default:
-                //levé exception
-                    throw new NonExistingAction("L'action demande n'existe pas");
+                case "a":
+                    $ac = new AdminController($this);
+                    break;
+
+                default:
+                    throw new Exception("L'action demandé n'existe pas");
 				    break;
 			}
 
 		} catch (PDOException $e)
 		{
-			//si erreur BD, pas le cas ici
 			$typeErreur = $errors['pdo'];
 			$detailErreur = $e->getMessage();
-			require ($dir.$views['erreur']);
+			require ($dir.$views['error']);
 
 		}
 		catch (Exception $e2)
 			{
             $typeErreur = $errors['autres'];
             $detailErreur = $e2->getMessage();
-			require ($dir.$views['erreur']);
+			require ($dir.$views['error']);
 			}
-		//fin
 		exit(0);
     }
 
 
     public function initialisation($public = true) {
-        global $dir, $views, $con;
-        $list_gw = new ListGateway($con);
-        $task_gw = new TaskGateway($con);
+        global $dir, $views;
+        $list_gw = new ListGateway();
+        $task_gw = new TaskGateway();
         
         $lists = $list_gw->getAllPublicLists();
         foreach ($lists as $l) {

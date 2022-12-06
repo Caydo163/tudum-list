@@ -1,16 +1,14 @@
 <?php 
 
 class VisitorController {
-    private $con;
     private $frontController;
     
     public function __construct($fc) {
-        global $dsn, $user, $pass, $dir, $views, $errors;
-        $this->con = new Connexion($dsn, $user, $pass);
+        global $dir, $views, $errors;
         $this->frontController = $fc;
 
         try{
-			switch($_REQUEST['action']) {
+			switch(filter_var($_REQUEST['action'], FILTER_SANITIZE_STRING)) {
                 case "v-account":
                     require($dir.$views['account']);
                     break;
@@ -31,106 +29,101 @@ class VisitorController {
                     $this->removeList();
                     break;
                 
-                case "v-valid_task":
-                    $this->validTask();
+                case "v-check_task":
+                    $this->setAchieveTask(true);
+                    break;
+
+                case "v-uncheck_task":
+                    $this->setAchieveTask(false);
                     break;
                 
-                case "v-connexion":
-                    $this->connexion();
+                case "v-sign_in":
+                    $this->signIn();
                     break;
 
-                case "v-inscription":
-                    $this->inscription();
+                case "v-registration":
+                    $this->registration();
                     break;
 
-				//mauvaise action
 				default:
-                //levé exception
-                    require($dir."NonExistingAction.php");
-                    throw new NonExistingAction("L'action demande n'existe pas");
+                    throw new Exception("L'action demandé n'existe pas");
 				    break;
 			}
 
 		} catch (PDOException $e)
 		{
-			//si erreur BD, pas le cas ici
 			$typeErreur = $errors['pdo'];
 			$detailErreur = $e->getMessage();
-			require ($dir.$views['erreur']);
+			require ($dir.$views['error']);
 
-		}
-		catch (Exception $e2)
+		} catch (Exception $e2)
         {
             $typeErreur = $errors['autres'];
             $detailErreur = $e2->getMessage();
-            require ($dir.$views['erreur']);
+            require ($dir.$views['error']);
         }
-
-
-		//fin
 		exit(0);
     }
 
     public function addTask() {
-        $task_gw = new TaskGateway($this->con);
+        $task_gw = new TaskGateway();
         $task = new Task($_REQUEST['list'], strip_tags($_REQUEST['task']));
         $task_gw->addTask($task);
         $this->frontController->initialisation();
     }
 
     public function addList() {
-        $list_gw = new ListGateway($this->con);
+        $list_gw = new ListGateway();
         $list = new Liste(strip_tags($_REQUEST['name']));
         $list_gw->addList($list);
         $this->frontController->initialisation();
     }
 
     public function removeTask() {
-        $task_gw = new TaskGateway($this->con);
-        $task_gw->removeTask($_REQUEST['id']);
-        $this->frontController->initialisation();
+        $task_gw = new TaskGateway();
+        $av = new AccessVerify();
+        if($av->taskAccess($_REQUEST['id'])) {
+            $task_gw->removeTask($_REQUEST['id']);
+            $this->frontController->initialisation();
+        } else {
+            throw new Exception("La tâche demandé n'existe pas");
+        }
     }
 
     public function removeList() {
-        $list_gw = new ListGateway($this->con);
-        $list_gw->removeList($_REQUEST['id']);
-        $this->frontController->initialisation();
+        $list_gw = new ListGateway();
+        $av = new AccessVerify();
+        if($av->listAccess($_REQUEST['id'])) {
+            $list_gw->removeList($_REQUEST['id']);
+            $this->frontController->initialisation();
+        } else {
+            throw new Exception("La liste demandé n'existe pas");
+        }
     }
 
-    public function validTask() {
-        $task_gw = new TaskGateway($this->con);
-        // TODO : chnager filtres
-        $task = filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING);
-        $achieve = filter_var($_REQUEST['achieve'], FILTER_SANITIZE_STRING);
-        $task_gw->setAchieveTask($task, $achieve);
-        $this->frontController->initialisation();
+    public function setAchieveTask($bool) {
+        $task_gw = new TaskGateway();
+        $av = new AccessVerify();
+        if($av->taskAccess($_REQUEST['task'])) {
+            $task = filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING);
+            $task_gw->setAchieveTask($task, $bool);
+            $this->frontController->initialisation();
+        } else {
+            throw new Exception("La tâche demandé n'existe pas");
+        }
     }
 
-    public function connexion() {
+    public function signIn() {
         $mdl_user = new MdlUser();
-        if($mdl_user->connexion($_REQUEST['login'],$_REQUEST['password'])) {
+        if($mdl_user->signIn($_REQUEST['login'],$_REQUEST['password'])) {
             $this->frontController->initialisation();
         }
 	}
 
-    public function inscription() {
-        global $dir, $views;
-        // require($dir."model/User.php");
-        // require($dir."model/UserGateway.php");
-        // require($dir."NonExistingAction.php");
-        $user_gw = new UserGateway($this->con);
-
-        $user = $user_gw->getUserByLogin($_REQUEST['login']);
-        if($user == NULL) {
-            $user = new User(strip_tags($_REQUEST['login']), password_hash(strip_tags($_REQUEST['password']), PASSWORD_DEFAULT));
-            $user_gw->addUser($user);
-            $_SESSION['role'] = 'user';
-            $_SESSION['login'] = $user->getLogin();
+    public function registration() {
+        $mdl_user = new MdlUser();
+        if($mdl_user->registration($_REQUEST['login'], $_REQUEST['password'])) {
             $this->frontController->initialisation();
-        }
-        else {
-            $errorMessageInscription = 'Login déjà utilisé';
-            require($dir.$views['account']);       
         }
     }
 }

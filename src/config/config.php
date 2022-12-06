@@ -9,15 +9,16 @@ $dsn='mysql:host=localhost;dbname=dbjucarvalhe';
 $con=null;
 
 //BD PC
-// $user='root';
-// $pass='';
-// $dsn='mysql:host=localhost;dbname=tudum-list';
+$user='root';
+$pass='';
+$dsn='mysql:host=localhost;dbname=tudum-list';
 
 
 //Vues
-$views['erreur']='view/erreur.php';
+$views['error']='view/error.php';
 $views['accueil']='view/accueil.php';
 $views['account']='view/account.php';
+$views['admin']='view/admin.php';
 
 
 //Erreur

@@ -3,7 +3,8 @@
 class UserGateway {
     private $con;
 
-    public function __construct($con) {
+    public function __construct() {
+        global $con;
         $this->con = $con;
     }
 
@@ -14,7 +15,7 @@ class UserGateway {
         if(count($user) == 0) {
             return NULL;
         }
-        return new User(utf8_encode($user[0]['login']), $user[0]['password'],$user[0]['id']);
+        return new User(utf8_encode($user[0]['login']), $user[0]['password'], $user[0]['admin'], $user[0]['id']);
     }
 
     public function addUser($user) {
@@ -25,6 +26,15 @@ class UserGateway {
     public function deleteUser($user) {
         $query = "DELETE FROM User WHERE id = :id;"; 
         $this->con->executeQuery($query, array(':id' => array($user->getId(), PDO::PARAM_INT)) );
+    }
+
+    public function getAllUsers() {
+        $query = "SELECT * FROM User"; 
+        $this->con->executeQuery($query);
+        foreach ($this->con->getResults() as $user) {
+            $users[] = new User(utf8_encode($user['login']), $user['password'], $user['admin'], $user['id']);
+        }
+        return $users;
     }
 }
 
