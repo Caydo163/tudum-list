@@ -18,7 +18,7 @@ class ListGateway {
     //     return $lists;
     // }
 
-    public function getAllPublicLists($page) {
+    public function getAllPublicListsPage($page) {
         $query = "SELECT * FROM List WHERE owner IS NULL LIMIT ".((6*$page)-6).",6"; 
         $this->con->executeQuery($query);
         $lists = [];
@@ -28,7 +28,7 @@ class ListGateway {
         return $lists;
     }
 
-    public function getAllUserLists($user, $page) {
+    public function getAllUserListsPage($user, $page) {
         $query = "SELECT * FROM List WHERE owner = :owner LIMIT ".((6*$page)-6).",6"; 
         $this->con->executeQuery($query, array(':owner' => array($user->getId(), PDO::PARAM_INT)));
         $lists = [];
@@ -50,15 +50,15 @@ class ListGateway {
         return $this->con->getResults()[0]['nbr'];
     }
 
-    // public function getAllUserLists($user) {
-    //     $query = "SELECT * FROM List WHERE owner = :owner"; 
-    //     $this->con->executeQuery($query, array(':owner' => array($user->getId(), PDO::PARAM_STR)));
-    //     $lists = [];
-    //     foreach ($this->con->getResults() as $list) {
-    //         $lists[] = new Liste(utf8_encode($list['name']),$list['owner'],$list['id']);
-    //     }
-    //     return $lists;
-    // }
+    public function getAllUserLists($user) {
+        $query = "SELECT * FROM List WHERE owner = :owner"; 
+        $this->con->executeQuery($query, array(':owner' => array($user->getId(), PDO::PARAM_STR)));
+        $lists = [];
+        foreach ($this->con->getResults() as $list) {
+            $lists[] = new Liste(utf8_encode($list['name']),$list['owner'],$list['id']);
+        }
+        return $lists;
+    }
 
     public function addList($list) {
         if($list->getOwner() == -1) {

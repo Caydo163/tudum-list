@@ -61,7 +61,7 @@ class FrontController {
         if(empty($page)){
             $page=1;
         }
-        $lists = $list_gw->getAllPublicLists($page);
+        $lists = $list_gw->getAllPublicListsPage($page);
         foreach ($lists as $l) {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);
         }

@@ -37,6 +37,7 @@
 
           
           <?php
+          $role = ($public) ? '\'v\'' : '\'u\'';
           Foreach ($lists as $l) {
             echo '
             <div class="col-auto">
@@ -63,7 +64,7 @@
               class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-3 mb-2">
               <div class="d-flex align-items-center">';
               
-              $role = ($public) ? '\'v\'' : '\'u\'';
+              
 
               if($t->getAchieve() == false){
                 echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().','.$role.')" id="'.$t->getId().'"><label class="mx-2">'.$t->getName().'</label>';
@@ -114,8 +115,8 @@
 
       <div class="row justify-content-between">
         <div>
-        <a href="?action=<?= ($public) ? 'v' : 'u' ?>-change_page&page=<?= $page-1 ?>"><i class="bi bi-arrow-left-square-fill" style="font-size:2em;"></i></a>
-        <a href="?action=<?= ($public) ? 'v' : 'u' ?>-change_page&page=<?= $page+1 ?>"><i class="bi bi-arrow-right-square-fill" style="font-size:2em;"></i></a>
+          <a href="?action=<?= ($public) ? 'v' : 'u' ?>-change_page&page=<?= $page-1 ?>"><i class="bi bi-arrow-left-square-fill" style="color:#e50914;font-size:2em;"></i></a>
+          <a href="?action=<?= ($public) ? 'v' : 'u' ?>-change_page&page=<?= $page+1 ?>"><i class="bi bi-arrow-right-square-fill" style="color:#e50914;font-size:2em;"></i></a>
         </div>
       </div>
 
