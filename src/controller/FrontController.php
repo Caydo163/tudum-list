@@ -55,11 +55,13 @@ class FrontController {
 
 
     public function initialisation($public = true) {
-        global $dir, $views;
+        global $dir, $views, $page;
         $list_gw = new ListGateway();
         $task_gw = new TaskGateway();
-        
-        $lists = $list_gw->getAllPublicLists();
+        if(empty($page)){
+            $page=1;
+        }
+        $lists = $list_gw->getAllPublicLists($page);
         foreach ($lists as $l) {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);
         }

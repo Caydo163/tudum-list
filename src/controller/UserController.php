@@ -55,17 +55,18 @@ class UserController {
 					$this->deleteAccount();
 					break;
 
+				case "u-change_page":
+					$this->pagination();
+					break;
 
-				//mauvaise action
+
 				default:
-                //levé exception
                     throw new Exception("L'action demandé n'existe pas");
 				    break;
 			}
 
 		} catch (PDOException $e)
 		{
-			//si erreur BD, pas le cas ici
 			$typeErreur = $errors['pdo'];
 			$detailErreur = $e->getMessage();
 			require ($dir.$views['error']);
@@ -77,9 +78,6 @@ class UserController {
 			$detailErreur = $e2->getMessage();
 			require ($dir.$views['error']);
 		}
-
-
-		//fin
 		exit(0);
     }
 
@@ -128,7 +126,7 @@ class UserController {
 	public function setAchieveTask($bool) {
         $task_gw = new TaskGateway();
 		$av = new AccessVerify();
-		if($av->taskAccess($_REQUEST['id'])) {
+		if($av->taskAccess($_REQUEST['task'])) {
 			$task = filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING);
 			$task_gw->setAchieveTask($task, $bool);
 			$this->privateListPage();
@@ -144,11 +142,13 @@ class UserController {
 	}
 
 	public function privateListPage() {
-        global $dir, $views;
+        global $dir, $views, $page;
         $list_gw = new ListGateway();
         $task_gw = new TaskGateway();
-        
-        $lists = $list_gw->getAllUserLists($this->user());
+		if(empty($page)){
+            $page=1;
+        }
+        $lists = $list_gw->getAllUserLists($this->user(), $page);
         foreach ($lists as $l) {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);
         }
@@ -164,7 +164,20 @@ class UserController {
 
 	}
 
-
+	public function pagination(){
+        global $page;
+        $page=filter_var($_REQUEST['page'],FILTER_SANITIZE_NUMBER_INT);
+        $list_gw = new ListGateway();
+        $nbLists = $list_gw->getNbrPrivateList($this->user());
+        $nbPagesMax = ceil($nbLists/6);
+        if($page<=1){
+            $page=1;
+        }
+        if($page>=$nbPagesMax){
+            $page=$nbPagesMax;
+        }
+        $this->privateListPage();
+    }
 
 }
 

@@ -45,6 +45,10 @@ class VisitorController {
                     $this->registration();
                     break;
 
+                case "v-change_page":
+                    $this->pagination();
+                    break;
+
 				default:
                     throw new Exception("L'action demandé n'existe pas");
 				    break;
@@ -125,6 +129,21 @@ class VisitorController {
         if($mdl_user->registration($_REQUEST['login'], $_REQUEST['password'])) {
             $this->frontController->initialisation();
         }
+    }
+
+    public function pagination(){
+        global $page;
+        $page=filter_var($_REQUEST['page'],FILTER_SANITIZE_NUMBER_INT );
+        $list_gw = new ListGateway();
+        $nbLists = $list_gw->getNbrList();
+        $nbPagesMax = ceil($nbLists/6);
+        if($page<=1){
+            $page=1;
+        }
+        if($page>=$nbPagesMax){
+            $page=$nbPagesMax;
+        }
+        $this->frontController->initialisation();
     }
 }
 

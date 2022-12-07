@@ -27,8 +27,8 @@
                     <button type="submit" class="btn btn-outline-light">
                       Ajouter liste
                       <i class="bi bi-plus-square"></i>
+                    </button>
                     </div>
-                  </button>
               </form>
 </div>
 </div>
@@ -62,12 +62,14 @@
               echo '<li
               class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-3 mb-2">
               <div class="d-flex align-items-center">';
-                  
+              
+              $role = ($public) ? '\'v\'' : '\'u\'';
+
               if($t->getAchieve() == false){
-                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().')" id="'.$t->getId().'"><label class="mx-2">'.$t->getName().'</label>';
+                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().','.$role.')" id="'.$t->getId().'"><label class="mx-2">'.$t->getName().'</label>';
 
               } else{
-                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().')" id="'.$t->getId().'" checked><label class="mx-2"><strike>'.$t->getName().'</strike></label>';
+                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().','.$role.')" id="'.$t->getId().'" checked><label class="mx-2"><strike>'.$t->getName().'</strike></label>';
               }   
 
               
@@ -109,6 +111,14 @@
           }
           ?>
       </div>
+
+      <div class="row justify-content-between">
+        <div>
+        <a href="?action=<?= ($public) ? 'v' : 'u' ?>-change_page&page=<?= $page-1 ?>"><i class="bi bi-arrow-left-square-fill" style="font-size:2em;"></i></a>
+        <a href="?action=<?= ($public) ? 'v' : 'u' ?>-change_page&page=<?= $page+1 ?>"><i class="bi bi-arrow-right-square-fill" style="font-size:2em;"></i></a>
+        </div>
+      </div>
+
       </div>
         </main>
           <?php require('footer.php') ?>

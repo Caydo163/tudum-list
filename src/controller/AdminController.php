@@ -65,7 +65,7 @@ class AdminController {
 		if($user->getAdmin()) {
 			throw new Exception("Cet utilisateur ne peut pas être supprimé à cause de son rôle (admin)");
 		}
-		$user_gw->deleteUser();
+		$user_gw->deleteUser($user);
 		$this->home();
 	}
 
