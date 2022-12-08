@@ -132,16 +132,18 @@ class VisitorController {
     }
 
     public function pagination(){
-        global $page;
-        $page=filter_var($_REQUEST['page'],FILTER_SANITIZE_NUMBER_INT );
+        $_COOKIE['page'] = filter_var($_REQUEST['page'],FILTER_SANITIZE_NUMBER_INT );
+        setcookie('page', filter_var($_REQUEST['page'],FILTER_SANITIZE_NUMBER_INT ));
         $list_gw = new ListGateway();
-        $nbLists = $list_gw->getNbrList();
+        $nbLists = $list_gw->getNbrPublicList();
         $nbPagesMax = ceil($nbLists/6);
-        if($page<=1){
-            $page=1;
+        if($_COOKIE['page'] <= 1){
+            $_COOKIE['page'] = 1;
+            setcookie('page',1);
         }
-        if($page>=$nbPagesMax){
-            $page=$nbPagesMax;
+        if($_COOKIE['page'] >= $nbPagesMax){
+            $_COOKIE['page'] = $nbPagesMax;
+            setcookie('page',$nbPagesMax);
         }
         $this->frontController->initialisation();
     }

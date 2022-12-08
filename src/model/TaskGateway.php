@@ -21,7 +21,7 @@ class TaskGateway {
         $this->con->executeQuery($query, array(':list' => array($liste->getId(), PDO::PARAM_INT) ));
         $tasks = [];
         foreach ($this->con->getResults() as $task) {
-            $tasks[] = new Task(utf8_encode($task['list']),$task['name'],$task['achieve'],$task['id']);
+            $tasks[] = new Task($task['list'],utf8_encode($task['name']),$task['achieve'],$task['id']);
         }
         return $tasks;
     }
@@ -60,7 +60,7 @@ class TaskGateway {
             return NULL;
         }
         $task = $task[0];
-        return new Task(utf8_encode($task['list']),$task['name'],$task['achieve'],$task['id']);
+        return new Task(utf8_encode($task['list']),utf8_encode($task['name']),$task['achieve'],$task['id']);
     }
 
 }

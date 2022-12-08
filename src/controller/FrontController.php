@@ -12,7 +12,6 @@ class FrontController {
     public function __construct() {
         global $dsn, $user, $pass, $dir, $views, $errors, $con;
         session_start();
-
         try{
             $con = new Connexion($dsn, $user, $pass);
 			switch(explode("-",$_REQUEST['action'])[0]) {
@@ -55,12 +54,14 @@ class FrontController {
 
 
     public function initialisation($public = true) {
-        global $dir, $views, $page;
+        global $dir, $views;
         $list_gw = new ListGateway();
         $task_gw = new TaskGateway();
-        if(empty($page)){
-            $page=1;
+        if(empty($_COOKIE['page'])) {
+            $_COOKIE['page'] = 1;
+            setcookie('page',1);
         }
+        $page = $_COOKIE['page'];
         $lists = $list_gw->getAllPublicListsPage($page);
         foreach ($lists as $l) {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);

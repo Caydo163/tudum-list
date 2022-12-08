@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>TUDUM-LIST</title>
-        <meta charset="utf-8" />
+        <meta charset="UTF-8" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link href="view/styleErreur.css" rel="stylesheet">
     </head>
@@ -21,7 +21,7 @@
                         echo '<h4 class="font-weight-bold text-white text-center">'.$typeErreur.'</h4> <br>';
                     }
                     if(!empty($detailErreur)) {
-                        echo '<p class="text-center">'.utf8_encode($detailErreur).'</p>';
+                        echo '<p class="text-center">'.$detailErreur.'</p>';
                     }
                 ?>
                 <a href="?action=">Revenir sur le site</a>

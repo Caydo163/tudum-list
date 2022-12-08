@@ -38,8 +38,8 @@ class ListGateway {
         return $lists;
     }
 
-    public function getNbrList() {
-        $query = "SELECT count(*) nbr FROM List";
+    public function getNbrPublicList() {
+        $query = "SELECT count(*) nbr FROM List WHERE owner IS NULL";
         $this->con->executeQuery($query);
         return $this->con->getResults()[0]['nbr'];
     }
