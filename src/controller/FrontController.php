@@ -57,11 +57,11 @@ class FrontController {
         global $dir, $views;
         $list_gw = new ListGateway();
         $task_gw = new TaskGateway();
-        if(empty($_COOKIE['page'])) {
-            $_COOKIE['page'] = 1;
+        if(empty($_SESSION['page'])) {
+            $_SESSION['page'] = 1;
             setcookie('page',1);
         }
-        $page = $_COOKIE['page'];
+        $page = $_SESSION['page'];
         $lists = $list_gw->getAllPublicListsPage($page);
         foreach ($lists as $l) {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);
