@@ -14,7 +14,8 @@ class FrontController {
         session_start();
         try{
             $con = new Connexion($dsn, $user, $pass);
-			switch(explode("-",$_REQUEST['action'])[0]) {
+            $action = (empty($_REQUEST['action'])) ? null : explode("-",$_REQUEST['action'])[0];
+			switch($action) {
 				case NULL:
 					$this->initialisation();
 					break;
@@ -59,7 +60,6 @@ class FrontController {
         $task_gw = new TaskGateway();
         if(empty($_SESSION['page'])) {
             $_SESSION['page'] = 1;
-            setcookie('page',1);
         }
         $page = $_SESSION['page'];
         $lists = $list_gw->getAllPublicListsPage($page);

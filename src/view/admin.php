@@ -12,20 +12,28 @@
       <?php require($dir.'view/header.php');?>
         
         <main>
-            <div class="w-50 card rounded-4 mx-auto my-5">
-                <div class="card-body p-3">
-                    <h3 class="text-white">Utilisateurs</h3>
-                    <div class="overflow-auto">
-                        <ul class="list-group">
-                            <?php
+            <div class="row p-5">
+
+                <div class="col-6 card rounded-4 my-5">
+                    <div class="card-body p-3">
+                        <h3 class="text-white">Utilisateurs</h3>
+                        <div class="overflow-auto">
+                            <ul class="list-group">
+                                <?php
                             foreach($users as $u) {
                                 $admin = ($u->getAdmin()) ? ' <span class="text-danger">(Admin)</span>' : '';
                                 echo '<li class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-3 mb-2">
                                 <p class="m-0">'.$u->getLogin().$admin.'</p>';
                                 if(!$u->getAdmin()) {
-                                    echo '<a href="?action=a-remove_user&login='.$u->getLogin().'" title="Remove user">
+                                    echo '
+                                    <div>
+                                    <a href="?action=a-list_user&login='.$u->getLogin().'" title="Afficher les listes de l\'utilisateur">
+                                    <i class="bi bi-list"></i></a>
+                                    <a href="?action=a-remove_user&delete_login='.$u->getLogin().'" title="Supprimer l\'utilisateur">
                                     <i class="bi bi-trash3 icon-red"></i>
-                                    </a>';
+                                    </a>
+                                    </div>'
+                                    ;
                                 }
                                 echo '</li>';
                             }
@@ -34,7 +42,56 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="col-6">
+                <?php
+                    if($lists == null) {
+                        echo "Pas d'utilisateur sélectionné";
+                    } else {
+                        echo '<h5>Utilisateur : '.$user.'</h5>';
+                        Foreach ($lists as $l) {    
+                            echo '
+                                <div class="col-auto">
+                                <div class="card rounded-4 mb-3">
+                                <div class="card-body p-3">
+                                <div class="row justify-content-between">
+                                <h6 class="col-auto">'.$l->getName().'</h6>';
+
+                            echo '<a class="col-auto" href="?action=a-remove_list&id='.$l->getId().'" title="Supprimer la liste">';
+                
+                            echo '<i class="bi bi-trash3 icon-white"></i>
+                                    </a>
+                                    </div>
+                                    <br>
+                                    <ul class="list-group">';
+                
+                            Foreach ($tasks[$l->getId()] as $t) {
+                            echo '<li
+                            class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-3 mb-2">
+                            <div class="d-flex align-items-center">';
+                    
+                    
+                            if($t->getAchieve() == false){
+                                echo '<input class="form-check-input my-0" type="checkbox" disabled="disabled"><label class="mx-2">'.$t->getName().'</label>';
+
+                            } else{
+                                echo '<input class="form-check-input my-0" type="checkbox" disabled="disabled" checked><label class="mx-2"><strike>'.$t->getName().'</strike></label>';
+                            }   
+
+                            
+                            echo '</div>
+                                <a href="?action=a-remove_task&id='.$t->getId().'" title="Supprimer la tâche">
+                                    <i class="bi bi-trash3 icon-red"></i>
+                                </a>
+                                </li>';
+                            }
+                            echo '</ul></div></div></div>';
+                        }
+                    }
+                ?>
+            </div>
+        </div>
         </main>
-          <?php require('footer.php') ?>
-      </body>
+        <?php require('footer.php') ?>
+    </body>
 </html>

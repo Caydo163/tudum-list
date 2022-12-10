@@ -7,9 +7,10 @@ class AccessVerify {
         if($list != NULL) {
             if($list->getOwner() != -1) {
                 if(!empty($_SESSION['role']) && !empty($_SESSION['login'])) {
-                    $user_gw = new UserGateway();
-                    $user = $user_gw->getUserByLogin($_SESSION['login']);
-                    if($user->getId() == $list->getOwner()) {
+                    if($this->userList($list)) {
+                        return true;
+                    }
+                    if($_SESSION['role'] == 'admin' && !$this->adminList($list)) {
                         return true;
                     }
                 }
@@ -27,6 +28,18 @@ class AccessVerify {
             return $this->listAccess($task->getList());
         }
         return false;
+    }
+
+    public function adminList($list) {
+        $user_gw = new UserGateway();
+        $user = $user_gw->getUserById($list->getOwner());
+        return $user->getAdmin();
+    }
+
+    public function userList($list) {
+        $user_gw = new UserGateway();
+        $user = $user_gw->getUserByLogin($_SESSION['login']);
+        return $user->getId() == $list->getOwner();
     }
 }
 

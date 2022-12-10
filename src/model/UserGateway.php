@@ -18,6 +18,16 @@ class UserGateway {
         return new User(utf8_encode($user[0]['login']), $user[0]['password'], $user[0]['admin'], $user[0]['id']);
     }
 
+    public function getUserById($id) {
+        $query = "SELECT * FROM User WHERE id = :id"; 
+        $this->con->executeQuery($query, array(':id' => array($id, PDO::PARAM_INT) ));
+        $user = $this->con->getResults();
+        if(count($user) == 0) {
+            return NULL;
+        }
+        return new User(utf8_encode($user[0]['login']), $user[0]['password'], $user[0]['admin'], $user[0]['id']);
+    }
+
     public function addUser($user) {
         $query = "INSERT INTO User (login, password) VALUES (:login, :password);"; 
         $this->con->executeQuery($query, array(':login' => array($user->getLogin(), PDO::PARAM_STR), ':password' => array($user->getPassword(), PDO::PARAM_STR)) );

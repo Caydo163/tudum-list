@@ -83,7 +83,13 @@ class UserController {
 
 	public function user() {
         $user_gw = new UserGateway();
-        return $user_gw->getUserByLogin($_SESSION['login']);
+		$user = $user_gw->getUserByLogin($_SESSION['login']);
+		if($user == null) {
+			$mdl_user = new MdlUser();
+			$mdl_user->deconnexion();
+			throw new Exception("L'utilisateur n'existe plus");
+		}
+        return $user;
 	}
 
 	public function addList() {
@@ -142,12 +148,13 @@ class UserController {
 	}
 
 	public function privateListPage() {
-        global $dir, $views, $page;
+        global $dir, $views;
         $list_gw = new ListGateway();
         $task_gw = new TaskGateway();
-		if(empty($page)){
-            $page=1;
+		if(empty($_SESSION['page_user'])){
+            $_SESSION['page_user'] = 1;
         }
+		$page = $_SESSION['page_user'];
         $lists = $list_gw->getAllUserListsPage($this->user(), $page);
         foreach ($lists as $l) {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);
@@ -165,16 +172,15 @@ class UserController {
 	}
 
 	public function pagination(){
-        global $page;
-        $page=filter_var($_REQUEST['page'],FILTER_SANITIZE_NUMBER_INT);
+        $_SESSION['page_user'] = filter_var($_REQUEST['page'],FILTER_SANITIZE_NUMBER_INT);
         $list_gw = new ListGateway();
         $nbLists = $list_gw->getNbrPrivateList($this->user());
         $nbPagesMax = ceil($nbLists/6);
-        if($page<=1){
-            $page=1;
+        if($_SESSION['page_user'] <= 1){
+            $_SESSION['page_user'] = 1;
         }
-        if($page>=$nbPagesMax){
-            $page=$nbPagesMax;
+        if($_SESSION['page_user'] >= $nbPagesMax){
+            $_SESSION['page_user'] = $nbPagesMax;
         }
         $this->privateListPage();
     }
