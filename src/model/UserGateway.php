@@ -39,7 +39,7 @@ class UserGateway {
     }
 
     public function getAllUsers() {
-        $query = "SELECT * FROM User"; 
+        $query = "SELECT * FROM User ORDER BY login"; 
         $this->con->executeQuery($query);
         foreach ($this->con->getResults() as $user) {
             $users[] = new User(utf8_encode($user['login']), $user['password'], $user['admin'], $user['id']);

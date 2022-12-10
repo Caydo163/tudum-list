@@ -64,7 +64,7 @@ class AdminController {
         return $user_gw->getUserByLogin($_SESSION['login']);
 	}
 
-    public function home($lists = null, $tasks = null, $user = null) {
+    public function home($lists = [], $tasks = [], $user = null) {
         global $dir, $views;
         $user_gw = new UserGateway();
         $users = $user_gw->getAllUsers();

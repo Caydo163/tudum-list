@@ -12,12 +12,12 @@
       <?php require($dir.'view/header.php');?>
         
         <main>
-            <div class="row p-5">
+            <div class="row p-4 w-100 h-75 justify-content-between" id="pageAdmin">
 
-                <div class="col-6 card rounded-4 my-5">
+                <div class="col-4 card rounded-4 h-100">
                     <div class="card-body p-3">
                         <h3 class="text-white">Utilisateurs</h3>
-                        <div class="overflow-auto">
+                        <div class="rounded-3 overflow-auto h-75">
                             <ul class="list-group">
                                 <?php
                             foreach($users as $u) {
@@ -43,12 +43,16 @@
                 </div>
             </div>
             
-            <div class="col-6">
+            <div class="col-7">
                 <?php
-                    if($lists == null) {
-                        echo "Pas d'utilisateur sélectionné";
+                    if($user == null) {
+                        echo '<h3 class="text-white">Pas d\'utilisateur sélectionné</h3>';
                     } else {
-                        echo '<h5>Utilisateur : '.$user.'</h5>';
+                        echo '<h3 class="text-white">Utilisateur : '.$user.'</h3>';
+                        if(empty($lists)) {
+                            echo '<p class="text-white">L\'utilisateur n\'a pas de liste</p>';
+                        }
+                        echo '<div class="rounded-3 overflow-auto" style="height:90%">';
                         Foreach ($lists as $l) {    
                             echo '
                                 <div class="col-auto">
@@ -87,6 +91,7 @@
                             }
                             echo '</ul></div></div></div>';
                         }
+                        echo '</div>';
                     }
                 ?>
             </div>
