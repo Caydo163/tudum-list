@@ -12,10 +12,10 @@
                 <?= (isset($_SESSION['role']) && $_SESSION['role']== 'admin') ? '<li><a href="?action=a-home" class="nav-link px-2 text-white">Page Admin</a></li>' : null ?>
             </ul>
             
-            <div class="text-end">
+            <div class="text-center">
                 <a href="?action=v-account">
                     <i class="bi bi-person-circle icon-white" style="font-size:2.5em;"></i></a>
-                    <?= (isset($_SESSION['role']) && in_array($_SESSION['role'], array('user','admin'))) ? '<p class="mb-0 text-center">'.$_SESSION['login'].'</p>' : null ?>
+                    <?= (isset($_SESSION['role']) && in_array($_SESSION['role'], array('user','admin'))) ? '<p class="mb-0">'.$_SESSION['login'].'</p>' : null ?>
                 
             </div>
         </div>

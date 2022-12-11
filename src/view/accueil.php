@@ -1,30 +1,30 @@
 <html>
     <head>
       <title>TUDUM-LIST</title>
-      <meta charset="UTF-8" />
+      <meta charset="utf-8" />
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
       <link href="view/custom.css" rel="stylesheet">
-      <script type="text/javascript" src="view/javascript.js"></script>    
+      <script type="text/javascript" src="view/checkbox.js"></script>    
     </head>
     <body>
       
       <?php require($dir.'view/header.php');?>
         
         <main>
-        <div class="container py-3">
+        <div class="container py-3 justify-content-center">
         
-        <div class="col-auto">
-            <div class="card rounded-4 mb-3">
+        <div class="row justify-content-center m-0">
+            <div class="card rounded-4 mb-5 w-75">
               <div class="card-body p-3">
-              <form class="d-flex justify-content-flex-start align-items-center" method="POST">
+              <form class="d-flex justify-content-flex-start align-items-center mb-0" method="POST">
                   <div class="col">
                     <input type="text" class="form-control" placeholder="Nouvelle liste ..." name="name" required>
                     <input type="hidden" name="action" value="<?= ($public) ? 'v-add_list' : 'u-add_list' ?>">
                   </div>
-                  <div class="col">
+                  <div class="col-auto">
                     
-                    <button type="submit" class="btn btn-outline-light">
+                    <button type="submit" class="btn btn-outline-light mx-3">
                       Ajouter liste
                       <i class="bi bi-plus-square"></i>
                     </button>
@@ -33,7 +33,7 @@
 </div>
 </div>
 </div>
-        <div class="row">
+        <div class="row justify-content-center">
 
           
           <?php

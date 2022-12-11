@@ -5,7 +5,7 @@ class MdlAdmin {
         global $dir, $views;
         $_SESSION['role'] = 'admin';
         $_SESSION['login'] = $user->getLogin();
-        require($dir.$views['admin']);
+        require($dir.$views['accueil']);
     }
 
     public function isAdmin() {

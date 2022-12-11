@@ -64,14 +64,11 @@ class AdminController {
         return $user_gw->getUserByLogin($_SESSION['login']);
 	}
 
-    public function home($lists = [], $tasks = [], $user = null) {
+    public function home($lists = [], $tasks = [], $user = '') {
         global $dir, $views;
         $user_gw = new UserGateway();
         $users = $user_gw->getAllUsers();
-		// if(!empty($_SESSION['user_adminPage'])) {
-		// 	// $user = $user_gw->getUserByLogin($_SESSION['user_adminPage'])->getLogin();
-		// 	// $this->showUserList($_SESSION['user_adminPage']);
-		// }
+
         require($dir.$views['admin']);
     }
 

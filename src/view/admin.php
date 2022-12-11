@@ -2,10 +2,12 @@
 <html>
     <head>
       <title>TUDUM-LIST - Admin</title>
-      <meta charset="UTF-8" />
+      <meta charset="utf-8" />
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
       <link href="view/custom.css" rel="stylesheet">
+      <script type="text/javascript" src="view/popupDeleteUser.js"></script>
     </head>
     <body>
       
@@ -16,7 +18,7 @@
 
                 <div class="col-4 card rounded-4 h-100">
                     <div class="card-body p-3">
-                        <h3 class="text-white">Utilisateurs</h3>
+                        <h3 class="text-white mb-4">Utilisateurs</h3>
                         <div class="rounded-3 overflow-auto h-75">
                             <ul class="list-group">
                                 <?php
@@ -29,8 +31,8 @@
                                     <div>
                                     <a href="?action=a-list_user&login='.$u->getLogin().'" title="Afficher les listes de l\'utilisateur">
                                     <i class="bi bi-list"></i></a>
-                                    <a href="?action=a-remove_user&delete_login='.$u->getLogin().'" title="Supprimer l\'utilisateur">
-                                    <i class="bi bi-trash3 icon-red"></i>
+                                    <a data-bs-toggle="modal" data-bs-target="#deleteUser_popup" data-bs-whatever="'.$u->getLogin().'">
+                                        <i class="bi bi-trash3 icon-red"></i>
                                     </a>
                                     </div>'
                                     ;
@@ -42,13 +44,32 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="deleteUser_popup" data-bs-backdrop="static" aria-labelledby="deleteUser_popupLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="background-color:#656565">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">Confirmation suppression</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color:white"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-white" id="popup_message">Message</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <a id="removeURL" type="button" class="btn btn-primary" title="Supprimer l\'utilisateur">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             
             <div class="col-7">
                 <?php
                     if($user == null) {
                         echo '<h3 class="text-white">Pas d\'utilisateur sélectionné</h3>';
                     } else {
-                        echo '<h3 class="text-white">Utilisateur : '.$user.'</h3>';
+                        echo '<h3 class="text-white mb-3">Utilisateur : '.$user.'</h3>';
                         if(empty($lists)) {
                             echo '<p class="text-white">L\'utilisateur n\'a pas de liste</p>';
                         }
@@ -94,6 +115,9 @@
                         echo '</div>';
                     }
                 ?>
+
+
+                
             </div>
         </div>
         </main>
