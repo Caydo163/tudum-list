@@ -24,7 +24,7 @@
                   </div>
                   <div class="col-auto">
                     
-                    <button type="submit" class="btn btn-outline-light mx-3">
+                    <button type="submit" class="btn btn-outline-light mx-2">
                       Ajouter liste
                       <i class="bi bi-plus-square"></i>
                     </button>

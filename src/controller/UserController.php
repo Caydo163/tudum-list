@@ -11,7 +11,6 @@ class UserController {
 		
 		if(!$mdl_user->isUser()) {
 			require($dir.$views['account']);
-			exit(0);
 		}
 		
 
@@ -81,7 +80,7 @@ class UserController {
 		exit(0);
     }
 
-	public function user() {
+	private function user() {
         $user_gw = new UserGateway();
 		$user = $user_gw->getUserByLogin($_SESSION['login']);
 		if($user == null) {

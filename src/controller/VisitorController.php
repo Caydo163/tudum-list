@@ -71,14 +71,14 @@ class VisitorController {
 
     public function addTask() {
         $task_gw = new TaskGateway();
-        $task = new Task($_REQUEST['list'], strip_tags($_REQUEST['task']));
+        $task = new Task($_REQUEST['list'], filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING));
         $task_gw->addTask($task);
         $this->frontController->initialisation();
     }
 
     public function addList() {
         $list_gw = new ListGateway();
-        $list = new Liste(strip_tags($_REQUEST['name']));
+        $list = new Liste(filter_var($_REQUEST['name'], FILTER_SANITIZE_STRING));
         $list_gw->addList($list);
         $this->frontController->initialisation();
     }
@@ -109,8 +109,8 @@ class VisitorController {
         $task_gw = new TaskGateway();
         $av = new AccessVerify();
         if($av->taskAccess($_REQUEST['task'])) {
-            $task = filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING);
-            $task_gw->setAchieveTask($task, $bool);
+            $idTask = filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING);
+            $task_gw->setAchieveTask($idTask, $bool);
             $this->frontController->initialisation();
         } else {
             throw new Exception("La tâche demandé n'existe pas");

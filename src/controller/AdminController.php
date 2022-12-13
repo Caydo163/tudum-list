@@ -59,11 +59,6 @@ class AdminController {
 		exit(0);
     }
 
-	public function user() {
-        $user_gw = new UserGateway();
-        return $user_gw->getUserByLogin($_SESSION['login']);
-	}
-
     public function home($lists = [], $tasks = [], $user = '') {
         global $dir, $views;
         $user_gw = new UserGateway();
@@ -86,12 +81,12 @@ class AdminController {
 		$list_gw = new ListGateway();
 		$user_gw = new UserGateway();
 		$task_gw = new TaskGateway();
-		if(empty($_REQUEST['login'])) {
-			$user = $user_gw->getUserByLogin($_SESSION['user_adminPage']);
-		} else {
-			$user = $user_gw->getUserByLogin($_REQUEST['login']);
-			$_SESSION['user_adminPage'] = $user->getLogin();
-		}
+		// if(empty($_REQUEST['login'])) {
+		// 	$user = $user_gw->getUserByLogin($_SESSION['user_adminPage']);
+		// } else {
+		// 	$_SESSION['user_adminPage'] = $user->getLogin();
+		// }
+		$user = $user_gw->getUserByLogin($_REQUEST['login']);
 		$lists = $list_gw->getAllUserLists($user);
 		$tasks = [];
 		foreach ($lists as $l) {
