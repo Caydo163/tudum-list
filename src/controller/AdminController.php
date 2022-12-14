@@ -15,8 +15,7 @@ class AdminController {
 		}
 		
         try{
-			$filter = new Filter();
-			switch($filter->filterString($_REQUEST['action'])) {
+			switch(Filter::filterString($_REQUEST['action'])) {
                 case "a-home":
 					$this->home();
                     break;
@@ -62,7 +61,7 @@ class AdminController {
         global $dir, $views;
         $user_gw = new UserGateway();
         $users = $user_gw->getAllUsers();
-
+		$nomPage = 'a';
         require($dir.$views['admin']);
     }
 

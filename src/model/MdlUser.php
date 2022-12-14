@@ -4,10 +4,9 @@ class MdlUser {
     public function signIn($login, $password) {
         global $dir, $views;
         $user_gw = new UserGateway();
-        $filter = new Filter();       
           
-        $login = $filter->filterString($login);
-        $password = $filter->filterString($password);
+        $login = Filter::filterString($login);
+        $password = Filter::filterString($password);
         $user = $user_gw->getUserByLogin($login);
         if($user != null) {
             if(password_verify($password, $user->getPassword())) {
@@ -21,7 +20,7 @@ class MdlUser {
                 return true;
             } else {
                 $errorMessageConnexion = 'Mot de passe incorrect';
-                $loginAutocompletion = $filter->filterString($_REQUEST['login']);
+                $loginAutocompletion = Filter::filterString($_REQUEST['login']);
                 require($dir.$views['account']);
             }
         } 
@@ -47,8 +46,7 @@ class MdlUser {
     public function deleteAccount() {
         $user_gw = new UserGateway();
 		$list_gw = new ListGateway();
-        $filter = new Filter();
-		$user = $user_gw->getUserByLogin($filter->filterString($_SESSION['login']));
+		$user = $user_gw->getUserByLogin(Filter::filterString($_SESSION['login']));
 		foreach($list_gw->getAllUserLists($user) as $l) {
 			$list_gw->removeList($l->getId());
 		}
@@ -58,21 +56,26 @@ class MdlUser {
     public function registration($login, $password) {
         global $dir, $views;
         $user_gw = new UserGateway();
-        $filter = new Filter();
-        $login = $filter->filterString($login);
-        $password = $filter->filterString($password);
+        $login = Filter::filterString($login);
+        $password = Filter::filterString($password);
 
-        $user = $user_gw->getUserByLogin($login);
-        if($user == NULL) {
-            $user = new User($login, password_hash($password, PASSWORD_DEFAULT));
-            $user_gw->addUser($user);
-            $_SESSION['role'] = 'user';
-            $_SESSION['login'] = $user->getLogin();
-            return true;
+        if(strlen($login) <= 20) {     
+            $user = $user_gw->getUserByLogin($login);
+            if($user == NULL) {
+                $user = new User($login, password_hash($password, PASSWORD_DEFAULT));
+                $user_gw->addUser($user);
+                $_SESSION['role'] = 'user';
+                $_SESSION['login'] = $user->getLogin();
+                return true;
+            }
+            else {
+                $errorMessageInscription = 'Login déjà utilisé';
+                require($dir.$views['account']);       
+            }
         }
         else {
-            $errorMessageInscription = 'Login déjà utilisé';
-            require($dir.$views['account']);       
+            $errorMessageInscription = 'Login trop long (limité à 20 caractères)';
+            require($dir.$views['account']);
         }
     }
 }

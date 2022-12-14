@@ -6,11 +6,15 @@
                 <h1>TUDUM-LIST</h1>    
             </a>
             
-            <!-- FIXME : Gérer cas page admin -->
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="?action=" class="nav-link px-2 text-<?= ($public) ? 'secondary' : 'white' ?>">Listes publiques</a></li>
-                <li><a href="?action=u-private_list" class="nav-link px-2 text-<?= ($public) ? 'white' : 'secondary' ?>">Listes privées</a></li>
-                <?= (isset($_SESSION['role']) && $_SESSION['role']== 'admin') ? '<li><a href="?action=a-home" class="nav-link px-2 text-white">Page Admin</a></li>' : null ?>
+                <li><a href="?action=" class="nav-link px-2 text-<?= ($nomPage == 'lpu') ? 'secondary' : 'white' ?>">Listes publiques</a></li>
+                <li><a href="?action=u-private_list" class="nav-link px-2 text-<?= ($nomPage == 'lpr') ? 'secondary' : 'white' ?>">Listes privées</a></li>
+                
+                <?php if(isset($_SESSION['role']) && $_SESSION['role']== 'admin') {
+                    $var = ($nomPage == 'a') ? 'secondary' : 'white';
+                    echo '<li><a href="?action=a-home" class="nav-link px-2 text-'.$var.'">Page Admin</a></li>';
+                }
+                ?>
             </ul>
             
             <div class="text-center">

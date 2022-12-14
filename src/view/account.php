@@ -1,4 +1,4 @@
-<?php $public = true ?>
+<?php $nomPage = null ?>
 <html>
     <head>
         <title>TUDUM-LIST</title>

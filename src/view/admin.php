@@ -1,4 +1,3 @@
-<?php $public = true ?>
 <html>
     <head>
       <title>TUDUM-LIST - Admin</title>

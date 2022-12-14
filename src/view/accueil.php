@@ -20,7 +20,7 @@
               <form class="d-flex justify-content-flex-start align-items-center mb-0" method="POST">
                   <div class="col">
                     <input type="text" class="form-control" placeholder="Nouvelle liste ..." name="name" required>
-                    <input type="hidden" name="action" value="<?= ($public) ? 'v-add_list' : 'u-add_list' ?>">
+                    <input type="hidden" name="action" value="<?= ($nomPage == 'lpu') ? 'v' : 'u' ?>-add_list">
                   </div>
                   <div class="col-auto">
                     
@@ -38,7 +38,7 @@
           
           <?php
           // TODO : Mettre scroll pour tâche
-          $role = ($public) ? '\'v\'' : '\'u\'';
+          $role = ($nomPage == 'lpu') ? '\'v\'' : '\'u\'';
           Foreach ($lists as $l) {
             echo '
             <div class="col-auto">
@@ -48,7 +48,7 @@
           <div class="row justify-content-between">
           <h6 class="col-auto">'.$l->getName().'</h6>';
 
-          if ($public) {
+          if ($nomPage == 'lpu') {
             echo '<a class="col-auto" href="?action=v-remove_list&id='.$l->getId().'" title="Remove list">';
           } else {
             echo '<a class="col-auto" href="?action=u-remove_list&id='.$l->getId().'" title="Remove list">';
@@ -77,7 +77,7 @@
               
                 echo '</div>';
 
-                if ($public) {
+                if ($nomPage == 'lpu') {
                   echo '<a href="?action=v-remove_task&id='.$t->getId().'" title="Remove task">';
                 } else {
                   echo '<a href="?action=u-remove_task&id='.$t->getId().'" title="Remove task">';
@@ -96,7 +96,7 @@
             <form class="d-flex justify-content-center align-items-center mt-4" method="POST">
                 <input type="text" class="form-control" placeholder="Nouvelle tâche ..." name="task" required>';
 
-                if ($public) {
+                if ($nomPage == 'lpu') {
                   echo '<input type="hidden" name="action" value="v-add_task">';
                 } else {
                   echo '<input type="hidden" name="action" value="u-add_task">';
@@ -116,8 +116,8 @@
 
       <div class="row justify-content-between">
         <div>
-          <a href="?action=<?= ($public) ? 'v' : 'u' ?>-change_page&page=<?= $page-1 ?>"><i class="bi bi-arrow-left-square-fill" style="color:#e50914;font-size:2em;"></i></a>
-          <a href="?action=<?= ($public) ? 'v' : 'u' ?>-change_page&page=<?= $page+1 ?>"><i class="bi bi-arrow-right-square-fill" style="color:#e50914;font-size:2em;"></i></a>
+          <a href="?action=<?= ($nomPage == 'lpu') ? 'v' : 'u' ?>-change_page&page=<?= $page-1 ?>"><i class="bi bi-arrow-left-square-fill" style="color:#e50914;font-size:2em;"></i></a>
+          <a href="?action=<?= ($nomPage == 'lpu') ? 'v' : 'u' ?>-change_page&page=<?= $page+1 ?>"><i class="bi bi-arrow-right-square-fill" style="color:#e50914;font-size:2em;"></i></a>
         </div>
       </div>
 

@@ -47,7 +47,7 @@ class FrontController {
     }
 
 
-    public function initialisation($public = true) {
+    public function initialisation() {
         global $dir, $views;
         $list_gw = new ListGateway();
         $task_gw = new TaskGateway();
@@ -59,6 +59,7 @@ class FrontController {
         foreach ($lists as $l) {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);
         }
+        $nomPage = 'lpu';
         require($dir.$views['accueil']);
     }
 }

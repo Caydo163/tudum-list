@@ -15,8 +15,7 @@ class UserController {
 		}
 		
         try{
-			$filter = new Filter();
-			switch($filter->filterString($_REQUEST['action'])) {
+			switch(Filter::filterString($_REQUEST['action'])) {
                 case "u-private_list":
 					$this->privateListPage();
                     break;
@@ -131,8 +130,7 @@ class UserController {
         $task_gw = new TaskGateway();
 		$av = new AccessVerify();
 		if($av->taskAccess($_REQUEST['task'])) {
-			$filter = new Filter();
-			$task = $filter->filterString($_REQUEST['task']);
+			$task = Filter::filterString($_REQUEST['task']);
 			$task_gw->setAchieveTask($task, $bool);
 			$this->privateListPage();
         } else {
@@ -158,7 +156,7 @@ class UserController {
         foreach ($lists as $l) {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);
         }
-		$public = false;
+		$nomPage = 'lpr';
         require($dir.$views['accueil']);
     }
 
@@ -171,8 +169,7 @@ class UserController {
 	}
 
 	public function pagination(){
-        $filter = new Filter();
-        $_SESSION['page_user'] = $filter->filterInt($_REQUEST['page']);
+        $_SESSION['page_user'] = Filter::filterInt($_REQUEST['page']);
         $list_gw = new ListGateway();
         $nbLists = $list_gw->getNbrPrivateList($this->user());
         $nbPagesMax = ceil($nbLists/6);
