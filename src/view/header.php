@@ -17,7 +17,6 @@
                 <a href="?action=v-account">
                     <i class="bi bi-person-circle icon-white" style="font-size:2.5em;"></i></a>
                     <?= (isset($_SESSION['role']) && in_array($_SESSION['role'], array('user','admin'))) ? '<p class="mb-0">'.$_SESSION['login'].'</p>' : null ?>
-                
             </div>
         </div>
     </div>

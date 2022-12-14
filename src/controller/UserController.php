@@ -14,11 +14,9 @@ class UserController {
 			exit;
 		}
 		
-
         try{
-			$action=$_REQUEST['action'];
-
-			switch($action) {
+			$filter = new Filter();
+			switch($filter->filterString($_REQUEST['action'])) {
                 case "u-private_list":
 					$this->privateListPage();
                     break;
@@ -133,7 +131,8 @@ class UserController {
         $task_gw = new TaskGateway();
 		$av = new AccessVerify();
 		if($av->taskAccess($_REQUEST['task'])) {
-			$task = filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING);
+			$filter = new Filter();
+			$task = $filter->filterString($_REQUEST['task']);
 			$task_gw->setAchieveTask($task, $bool);
 			$this->privateListPage();
         } else {
@@ -172,7 +171,8 @@ class UserController {
 	}
 
 	public function pagination(){
-        $_SESSION['page_user'] = filter_var($_REQUEST['page'],FILTER_SANITIZE_NUMBER_INT);
+        $filter = new Filter();
+        $_SESSION['page_user'] = $filter->filterInt($_REQUEST['page']);
         $list_gw = new ListGateway();
         $nbLists = $list_gw->getNbrPrivateList($this->user());
         $nbPagesMax = ceil($nbLists/6);

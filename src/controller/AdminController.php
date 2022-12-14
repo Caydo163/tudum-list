@@ -15,9 +15,8 @@ class AdminController {
 		}
 		
         try{
-			$action=$_REQUEST['action'];
-
-			switch($action) {
+			$filter = new Filter();
+			switch($filter->filterString($_REQUEST['action'])) {
                 case "a-home":
 					$this->home();
                     break;
@@ -81,12 +80,12 @@ class AdminController {
 		$list_gw = new ListGateway();
 		$user_gw = new UserGateway();
 		$task_gw = new TaskGateway();
-		// if(empty($_REQUEST['login'])) {
-		// 	$user = $user_gw->getUserByLogin($_SESSION['user_adminPage']);
-		// } else {
-		// 	$_SESSION['user_adminPage'] = $user->getLogin();
-		// }
-		$user = $user_gw->getUserByLogin($_REQUEST['login']);
+		if(empty($_REQUEST['login'])) {
+			$user = $user_gw->getUserByLogin($_SESSION['user_adminPage']);
+		} else {
+			$user = $user_gw->getUserByLogin($_REQUEST['login']);
+			$_SESSION['user_adminPage'] = $user->getLogin();
+		}
 		$lists = $list_gw->getAllUserLists($user);
 		$tasks = [];
 		foreach ($lists as $l) {

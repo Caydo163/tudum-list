@@ -3,10 +3,11 @@
 class MdlUser {
     public function signIn($login, $password) {
         global $dir, $views;
-        $user_gw = new UserGateway();        
+        $user_gw = new UserGateway();
+        $filter = new Filter();       
           
-        $login = filter_var($login, FILTER_SANITIZE_STRING);
-        $password = filter_var($password, FILTER_SANITIZE_STRING);
+        $login = $filter->filterString($login);
+        $password = $filter->filterString($password);
         $user = $user_gw->getUserByLogin($login);
         if($user != null) {
             if(password_verify($password, $user->getPassword())) {
@@ -20,7 +21,7 @@ class MdlUser {
                 return true;
             } else {
                 $errorMessageConnexion = 'Mot de passe incorrect';
-                $loginAutocompletion = strip_tags($_REQUEST['login']);
+                $loginAutocompletion = $filter->filterString($_REQUEST['login']);
                 require($dir.$views['account']);
             }
         } 
@@ -44,10 +45,10 @@ class MdlUser {
     }
 
     public function deleteAccount() {
-        // TODO : verifier sir utilisateur existe
         $user_gw = new UserGateway();
 		$list_gw = new ListGateway();
-		$user = $user_gw->getUserByLogin(filter_var($_SESSION['login'], FILTER_SANITIZE_STRING));
+        $filter = new Filter();
+		$user = $user_gw->getUserByLogin($filter->filterString($_SESSION['login']));
 		foreach($list_gw->getAllUserLists($user) as $l) {
 			$list_gw->removeList($l->getId());
 		}
@@ -57,8 +58,9 @@ class MdlUser {
     public function registration($login, $password) {
         global $dir, $views;
         $user_gw = new UserGateway();
-        $login = filter_var($login, FILTER_SANITIZE_STRING);
-        $password = filter_var($password, FILTER_SANITIZE_STRING);
+        $filter = new Filter();
+        $login = $filter->filterString($login);
+        $password = $filter->filterString($password);
 
         $user = $user_gw->getUserByLogin($login);
         if($user == NULL) {

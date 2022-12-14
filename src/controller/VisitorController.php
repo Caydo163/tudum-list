@@ -6,9 +6,10 @@ class VisitorController {
     public function __construct($fc) {
         global $dir, $views, $errors;
         $this->frontController = $fc;
-
+        
         try{
-			switch(filter_var($_REQUEST['action'], FILTER_SANITIZE_STRING)) {
+            $filter = new Filter();
+			switch($filter->filterString($_REQUEST['action'])) {
                 case "v-account":
                     require($dir.$views['account']);
                     break;
@@ -71,16 +72,16 @@ class VisitorController {
 
     public function addTask() {
         $task_gw = new TaskGateway();
-        $task = new Task($_REQUEST['list'], filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING));
+        $filter = new Filter();
+        $task = new Task($_REQUEST['list'], $filter->filterString($_REQUEST['task']));
         $task_gw->addTask($task);
         $this->frontController->initialisation();
     }
-    // TODO faire classe filtre
-    // BUG delete user admin
 
     public function addList() {
         $list_gw = new ListGateway();
-        $list = new Liste(filter_var($_REQUEST['name'], FILTER_SANITIZE_STRING));
+        $filter = new Filter();
+        $list = new Liste($filter->filterString($_REQUEST['name']));
         $list_gw->addList($list);
         $this->frontController->initialisation();
     }
@@ -111,7 +112,8 @@ class VisitorController {
         $task_gw = new TaskGateway();
         $av = new AccessVerify();
         if($av->taskAccess($_REQUEST['task'])) {
-            $idTask = filter_var($_REQUEST['task'], FILTER_SANITIZE_STRING);
+            $filter = new Filter();
+            $idTask = $filter->filterString($_REQUEST['task']);
             $task_gw->setAchieveTask($idTask, $bool);
             $this->frontController->initialisation();
         } else {
@@ -134,7 +136,8 @@ class VisitorController {
     }
 
     public function pagination(){
-        $_SESSION['page'] = filter_var($_REQUEST['page'],FILTER_SANITIZE_NUMBER_INT );
+        $filter = new Filter();
+        $_SESSION['page'] = $filter->filterInt($_REQUEST['page']);
         $list_gw = new ListGateway();
         $nbLists = $list_gw->getNbrPublicList();
         $nbPagesMax = ceil($nbLists/6);
