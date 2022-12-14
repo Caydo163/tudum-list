@@ -75,6 +75,8 @@ class VisitorController {
         $task_gw->addTask($task);
         $this->frontController->initialisation();
     }
+    // TODO faire classe filtre
+    // BUG delete user admin
 
     public function addList() {
         $list_gw = new ListGateway();
