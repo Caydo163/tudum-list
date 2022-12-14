@@ -37,6 +37,7 @@
 
           
           <?php
+          // TODO : Mettre scroll pour tâche
           $role = ($public) ? '\'v\'' : '\'u\'';
           Foreach ($lists as $l) {
             echo '

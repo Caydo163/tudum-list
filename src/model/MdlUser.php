@@ -44,6 +44,7 @@ class MdlUser {
     }
 
     public function deleteAccount() {
+        // TODO : verifier sir utilisateur existe
         $user_gw = new UserGateway();
 		$list_gw = new ListGateway();
 		$user = $user_gw->getUserByLogin(filter_var($_SESSION['login'], FILTER_SANITIZE_STRING));

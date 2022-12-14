@@ -11,6 +11,7 @@ class UserController {
 		
 		if(!$mdl_user->isUser()) {
 			require($dir.$views['account']);
+			exit;
 		}
 		
 
