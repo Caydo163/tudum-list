@@ -2,13 +2,13 @@
 
 class FrontController {
     
-    public function __construct() {
+    public function __construct($params) {
         global $dsn, $user, $pass, $dir, $views, $errors, $con;
         session_start();
         try{
             $con = new Connexion($dsn, $user, $pass);
             
-			switch(Validation::actionRole($_REQUEST['action'])) {
+			switch(Validation::actionRole($params['action'])) {
 				case NULL:
 					$this->initialisation();
 					break;

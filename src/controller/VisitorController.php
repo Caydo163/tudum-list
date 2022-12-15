@@ -3,12 +3,15 @@
 class VisitorController {
     private $frontController;
     
-    public function __construct($fc) {
+    public function __construct($fc, $params) {
         global $dir, $views, $errors;
         $this->frontController = $fc;
-        
+ 
         try{
-			switch(Validation::filterString($_REQUEST['action'])) {
+			switch(Validation::filterString($params['action'])) {
+                case NULL:
+                    $this->fc->initialisation();
+                    break;
                 case "v-account":
                     require($dir.$views['account']);
                     break;
