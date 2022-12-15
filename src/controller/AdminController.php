@@ -15,7 +15,7 @@ class AdminController {
 		}
 		
         try{
-			switch(Filter::filterString($_REQUEST['action'])) {
+			switch(Validation::filterString($_REQUEST['action'])) {
                 case "a-home":
 					$this->home();
                     break;

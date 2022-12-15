@@ -8,7 +8,7 @@ class VisitorController {
         $this->frontController = $fc;
         
         try{
-			switch(Filter::filterString($_REQUEST['action'])) {
+			switch(Validation::filterString($_REQUEST['action'])) {
                 case "v-account":
                     require($dir.$views['account']);
                     break;
@@ -71,14 +71,14 @@ class VisitorController {
 
     public function addTask() {
         $task_gw = new TaskGateway();
-        $task = new Task($_REQUEST['list'], Filter::filterString($_REQUEST['task']));
+        $task = new Task($_REQUEST['list'], Validation::filterString($_REQUEST['task']));
         $task_gw->addTask($task);
         $this->frontController->initialisation();
     }
 
     public function addList() {
         $list_gw = new ListGateway();
-        $list = new Liste(Filter::filterString($_REQUEST['name']));
+        $list = new Liste(Validation::filterString($_REQUEST['name']));
         $list_gw->addList($list);
         $this->frontController->initialisation();
     }
@@ -109,7 +109,7 @@ class VisitorController {
         $task_gw = new TaskGateway();
         $av = new AccessVerify();
         if($av->taskAccess($_REQUEST['task'])) {
-            $idTask = Filter::filterString($_REQUEST['task']);
+            $idTask = Validation::filterString($_REQUEST['task']);
             $task_gw->setAchieveTask($idTask, $bool);
             $this->frontController->initialisation();
         } else {
@@ -132,7 +132,7 @@ class VisitorController {
     }
 
     public function pagination(){
-        $_SESSION['page'] = Filter::filterInt($_REQUEST['page']);
+        $_SESSION['page'] = Validation::filterInt($_REQUEST['page']);
         $list_gw = new ListGateway();
         $nbLists = $list_gw->getNbrPublicList();
         $nbPagesMax = ceil($nbLists/6);

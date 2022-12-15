@@ -7,8 +7,8 @@ class FrontController {
         session_start();
         try{
             $con = new Connexion($dsn, $user, $pass);
-            $action = (empty($_REQUEST['action'])) ? null : explode("-",$_REQUEST['action'])[0];
-			switch($action) {
+            
+			switch(Validation::actionRole($_REQUEST['action'])) {
 				case NULL:
 					$this->initialisation();
 					break;
@@ -60,7 +60,7 @@ class FrontController {
             $tasks[$l->getId()] = $task_gw->getTasksList($l);
         }
         $nomPage = 'lpu';
-        require($dir.$views['accueil']);
+        require($dir.$views['home']);
     }
 }
 

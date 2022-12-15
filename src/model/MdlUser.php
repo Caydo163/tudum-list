@@ -5,8 +5,8 @@ class MdlUser {
         global $dir, $views;
         $user_gw = new UserGateway();
           
-        $login = Filter::filterString($login);
-        $password = Filter::filterString($password);
+        $login = Validation::filterString($login);
+        $password = Validation::filterString($password);
         $user = $user_gw->getUserByLogin($login);
         if($user != null) {
             if(password_verify($password, $user->getPassword())) {
@@ -19,8 +19,8 @@ class MdlUser {
                 }
                 return true;
             } else {
-                $errorMessageConnexion = 'Mot de passe incorrect';
-                $loginAutocompletion = Filter::filterString($_REQUEST['login']);
+                $errorMessageConnexion = 'Validation de passe incorrect';
+                $loginAutocompletion = Validation::filterString($_REQUEST['login']);
                 require($dir.$views['account']);
             }
         } 
@@ -46,7 +46,7 @@ class MdlUser {
     public function deleteAccount() {
         $user_gw = new UserGateway();
 		$list_gw = new ListGateway();
-		$user = $user_gw->getUserByLogin(Filter::filterString($_SESSION['login']));
+		$user = $user_gw->getUserByLogin(Validation::filterString($_SESSION['login']));
 		foreach($list_gw->getAllUserLists($user) as $l) {
 			$list_gw->removeList($l->getId());
 		}
@@ -56,8 +56,8 @@ class MdlUser {
     public function registration($login, $password) {
         global $dir, $views;
         $user_gw = new UserGateway();
-        $login = Filter::filterString($login);
-        $password = Filter::filterString($password);
+        $login = Validation::filterString($login);
+        $password = Validation::filterString($password);
 
         if(strlen($login) <= 20) {     
             $user = $user_gw->getUserByLogin($login);
