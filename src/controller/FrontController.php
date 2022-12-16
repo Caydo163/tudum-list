@@ -1,5 +1,7 @@
 <?php
 
+// FrontController utilisé avant la mise en place d'AltoRouter
+
 class FrontController {
     
     public function __construct($params) {
@@ -14,7 +16,7 @@ class FrontController {
 					break;
                 
                 case "v":
-                    $vc = new VisitorController($this);
+                    $vc = new VisitorController($this, $params);
                     break;
 
                 case "u":

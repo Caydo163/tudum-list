@@ -1,46 +1,45 @@
 <?php
-// require_once(__DIR__.'/config/config.php');
-// require_once(__DIR__.'/config/Autoload.php');
-// Autoload::charger();
-// $fc = new FrontController();
-?>
+    require_once(__DIR__.'/config/config.php');
+    require_once(__DIR__.'/config/Autoload.php');
+    Autoload::charger();
 
-<?php
-require_once(__DIR__.'/config/config.php');
-require_once(__DIR__.'/config/Autoload.php');
-Autoload::charger();
-$router = new AltoRouter();
-$router->setBasePath('/tudum-list/src');
-// $router->map('GET', '/', 'AppController');
-$router->map('GET|POST', '/', 'VisitorController');
-$router->map('GET|POST', '/[*:action]', 'VisitorController');
-$router->map('GET|POST', '/le', 'VisitorController');
+    global $router;
+    $router = new AltoRouter();
+    $router->setBasePath('/tudum-list/src');
 
-$id =0;
-$match = $router->match();
-// echo var_dump($match);
+    $router->map('GET|POST', '/', 'VisitorController');
+    $router->map('GET|POST', '/admin/[a:action]/[i:id]?', 'AdminController', 'adminId');
+    $router->map('GET|POST', '/admin/[a:action]?/[a:login]?', 'AdminController', 'admin');
+    $router->map('GET|POST', '/user/[a:action]?/[i:id]?', 'UserController', 'user');
+    $router->map('GET|POST', '/[a:action]/[i:id]?', 'VisitorController', 'visitor');
 
-$action = array();
-$id=array();
-if (!$match) {
-    $typeErreur = $errors['autres'];
-    $detailErreur = "Problème de chemin";
-    require ($dir.$views['error']);
-}
-if ($match) {
-//list($controller, $action) = explode('#', $match['target'] );
-    $controller=$match['target'] ?? null;
-    $action=$match['params']['action'] ?? null;
-    $id=$match['params']['id'] ?? null;
-    // echo $match['params'];
+    $match = $router->match();
+    if (!$match) {
+        $typeErreur = $errors['router'];
+        $detailErreur = "Le chemin n'existe pas";
+        require ($dir.$views['error']);
+    }
+    else {
+        try {
+            session_start();
+            $con = new Connexion($dsn, $user, $pass);
 
-try {
-    $controller = new FrontController($match['params']);
-    // if (is_callable(array($controller, $action))) {
-    //     call_user_func_array(array($controller, $action),
-    //         array($match['params']));
-    // }
-}
-catch (Error $error){print 'pas de controller';}
-}
+            switch($match['target']) {
+                case 'VisitorController':
+                    $c = new VisitorController($match['params']);
+                    break;
+                case 'UserController':
+                    $c = new UserController($match['params']);
+                    break;
+                case 'AdminController':
+                    $c = new AdminController($match['params']);
+                    break;
+            }
+        }
+        catch (Error $error) {
+            $typeErreur = $errors['others'];
+            $detailErreur = "Erreur";
+            require ($dir.$views['error']);
+        }
+    }
 ?>

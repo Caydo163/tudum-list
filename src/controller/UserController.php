@@ -1,11 +1,9 @@
 <?php 
 
 class UserController {
-    private $frontController;
     
-    public function __construct($fc) {
+    public function __construct($params) {
         global $dir, $views, $errors;
-        $this->frontController = $fc;
 		
 		$mdl_user = new MdlUser();
 		
@@ -15,45 +13,46 @@ class UserController {
 		}
 		
         try{
-			switch(Validation::filterString($_REQUEST['action'])) {
-                case "u-private_list":
+			$action = (empty($params['action'])) ? null : $params['action'];
+			switch(Validation::filterString($action)) {
+                case NULL:
 					$this->privateListPage();
                     break;
 
-				case "u-add_list":
+				case "addList":
 					$this->addList();
 					break;
 
-				case "u-remove_list":
-					$this->removeList();
+				case "removeList":
+					$this->removeList($params['id']);
 					break;
 				
-				case "u-add_task":
+				case "addTask":
 					$this->addTask();
 					break;
 
-				case "u-remove_task":
-					$this->removeTask();
+				case "removeTask":
+					$this->removeTask($params['id']);
 					break;
 
-				case "u-check_task":
-					$this->setAchieveTask(true);
+				case "checkTask":
+					$this->setAchieveTask(true, $params['id']);
 					break;
 
-				case "u-uncheck_task":
-					$this->setAchieveTask(false);
+				case "uncheckTask":
+					$this->setAchieveTask(false, $params['id']);
 					break;
 
-				case "u-deconnexion":
+				case "deconnexion":
 					$this->deconnexion();
 					break;
 				
-				case "u-delete_account":
+				case "deleteAccount":
 					$this->deleteAccount();
 					break;
 
-				case "u-change_page":
-					$this->pagination();
+				case "changePage":
+					$this->pagination($params['id']);
 					break;
 
 
@@ -97,22 +96,22 @@ class UserController {
         $this->privateListPage();
     }
 	
-	public function removeList() {
+	public function removeList($id) {
 		$list_gw = new ListGateway();
 		$av = new AccessVerify();
-        if($av->listAccess($_REQUEST['id'])) {
-			$list_gw->removeList($_REQUEST['id']);
+        if($av->listAccess($id)) {
+			$list_gw->removeList($id);
 			$this->privateListPage();
         } else {
 			throw new Exception("La liste demandé n'existe pas");
 		}
 	}
 
-	public function removeTask() {
+	public function removeTask($id) {
 		$task_gw = new TaskGateway();
 		$av = new AccessVerify();
-		if($av->taskAccess($_REQUEST['id'])) {
-			$task_gw->removeTask($_REQUEST['id']);
+		if($av->taskAccess($id)) {
+			$task_gw->removeTask($id);
 			$this->privateListPage();
         } else {
 			throw new Exception("La tâche demandé n'existe pas");
@@ -121,17 +120,17 @@ class UserController {
 
 	public function addTask() {
         $task_gw = new TaskGateway();
-        $task = new Task($_REQUEST['list'], strip_tags($_REQUEST['task']));
+        $task = new Task($_REQUEST['list'], strip_tags($_REQUEST['name']));
         $task_gw->addTask($task);
 		$this->privateListPage();
     }
 
-	public function setAchieveTask($bool) {
+	public function setAchieveTask($bool, $id) {
         $task_gw = new TaskGateway();
 		$av = new AccessVerify();
-		if($av->taskAccess($_REQUEST['task'])) {
-			$task = Validation::filterString($_REQUEST['task']);
-			$task_gw->setAchieveTask($task, $bool);
+		$idTask = Validation::filterString($id);
+		if($av->taskAccess($idTask)) {
+			$task_gw->setAchieveTask($idTask, $bool);
 			$this->privateListPage();
         } else {
 			throw new Exception("La tâche demandé n'existe pas");
@@ -139,9 +138,10 @@ class UserController {
     }
 
 	public function deconnexion() {
+		global $dir, $views;
 		$mdl_user = new MdlUser();
 		$mdl_user->deconnexion();
-		$this->frontController->initialisation();
+		require($dir.$views['account']);
 	}
 
 	public function privateListPage() {
@@ -161,15 +161,16 @@ class UserController {
     }
 
 	public function deleteAccount() {
+		global $dir, $views;
 		$mdl_user = new MdlUser();
 		$mdl_user->deleteAccount();
 		$mdl_user->deconnexion();
-		$this->frontController->initialisation();
+		require($dir.$views['account']);
 
 	}
 
-	public function pagination(){
-        $_SESSION['page_user'] = Validation::filterInt($_REQUEST['page']);
+	public function pagination($nb){
+        $_SESSION['page_user'] = Validation::filterInt($nb);
         $list_gw = new ListGateway();
         $nbLists = $list_gw->getNbrPrivateList($this->user());
         $nbPagesMax = ceil($nbLists/6);
@@ -181,7 +182,6 @@ class UserController {
         }
         $this->privateListPage();
     }
-
 }
 
 ?>

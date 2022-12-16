@@ -24,6 +24,7 @@ $views['admin']='view/admin.php';
 //Erreur
 $errors['action']="L'action demandé n'existe pas";
 $errors['pdo']='Erreur avec la base de données';
-$errors['autres']='Une erreur est survenu';
+$errors['router']='Erreur avec le routeur';
+$errors['others']='Une erreur est survenu';
 
 ?>

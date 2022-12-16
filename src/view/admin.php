@@ -1,3 +1,4 @@
+<?php global $router ?>
 <html>
     <head>
       <title>TUDUM-LIST - Admin</title>
@@ -5,8 +6,9 @@
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-      <link href="view/custom.css" rel="stylesheet">
-      <script type="text/javascript" src="view/popupDeleteUser.js"></script>
+      <link href="../view/custom.css" rel="stylesheet">
+        <link href="../../view/custom.css" rel="stylesheet">      
+        <script type="text/javascript" src="../view/popupDeleteUser.js"></script>
     </head>
     <body>
       
@@ -28,7 +30,7 @@
                                 if(!$u->getAdmin()) {
                                     echo '
                                     <div>
-                                    <a href="?action=a-list_user&login='.$u->getLogin().'" title="Afficher les listes de l\'utilisateur">
+                                    <a href="'.$router->generate('admin', array("action" => "listUser", "login" => $u->getLogin())).'" title="Afficher les listes de l\'utilisateur">
                                     <i class="bi bi-list"></i></a>
                                     <a data-bs-toggle="modal" data-bs-target="#deleteUser_popup" data-bs-whatever="'.$u->getLogin().'">
                                         <i class="bi bi-trash3 icon-red"></i>
@@ -56,7 +58,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <a id="removeURL" type="button" class="btn btn-primary" title="Supprimer l\'utilisateur">Supprimer</a>
+                            <a id="removeURL" type="button" class="btn btn-primary" title="Supprimer l'utilisateur">Supprimer</a>
                         </div>
                     </div>
                 </div>
@@ -81,7 +83,7 @@
                                 <div class="row justify-content-between">
                                 <h6 class="col-auto">'.$l->getName().'</h6>';
 
-                            echo '<a class="col-auto" href="?action=a-remove_list&id='.$l->getId().'" title="Supprimer la liste">';
+                            echo '<a class="col-auto" href="'.$router->generate('adminId', array("action" => "removeList", "id" => $l->getId())).'" title="Supprimer la liste">';
                 
                             echo '<i class="bi bi-trash3 icon-white"></i>
                                     </a>
@@ -104,7 +106,7 @@
 
                             
                             echo '</div>
-                                <a href="?action=a-remove_task&id='.$t->getId().'" title="Supprimer la tâche">
+                                <a href="'.$router->generate('adminId', array("action" => "removeTask", "id" => $t->getId())).'" title="Supprimer la tâche">
                                     <i class="bi bi-trash3 icon-red"></i>
                                 </a>
                                 </li>';

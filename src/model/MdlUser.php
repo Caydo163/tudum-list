@@ -19,7 +19,7 @@ class MdlUser {
                 }
                 return true;
             } else {
-                $errorMessageConnexion = 'Validation de passe incorrect';
+                $errorMessageConnexion = 'Mot de passe incorrect';
                 $loginAutocompletion = Validation::filterString($_REQUEST['login']);
                 require($dir.$views['account']);
             }

@@ -4,5 +4,5 @@ document.addEventListener("show.bs.modal", (event) => {
   p = document.getElementById("popup_message");
   a = document.getElementById("removeURL");
   p.innerText = `Voulez-vous vraiment supprimer le compte de ${recipient} ?`;
-  a.href = `?action=a-remove_user&delete_login=${recipient}`;
+  a.href = `removeUser/${recipient}`;
 });

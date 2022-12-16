@@ -1,55 +1,54 @@
 <?php 
 
 class VisitorController {
-    private $frontController;
     
-    public function __construct($fc, $params) {
+    public function __construct($params) {
         global $dir, $views, $errors;
-        $this->frontController = $fc;
- 
         try{
-			switch(Validation::filterString($params['action'])) {
+            $action = (empty($params['action'])) ? null : $params['action'];
+			switch(Validation::filterString($action)) {
                 case NULL:
-                    $this->fc->initialisation();
+                    $this->initialisation();
                     break;
-                case "v-account":
+
+                case "account":
                     require($dir.$views['account']);
                     break;
 
-                case "v-add_task":
+                case "addTask":
                     $this->addTask();
                     break;
 
-                case "v-add_list":
+                case "addList":
                     $this->addList();
                     break;
                 
-                case "v-remove_task":
-                    $this->removeTask();
+                case "removeTask":
+                    $this->removeTask($params['id']);
                     break;
 
-                case "v-remove_list":
-                    $this->removeList();
+                case "removeList":
+                    $this->removeList($params['id']);
                     break;
                 
-                case "v-check_task":
-                    $this->setAchieveTask(true);
+                case "checkTask":
+                    $this->setAchieveTask(true, $params['id']);
                     break;
 
-                case "v-uncheck_task":
-                    $this->setAchieveTask(false);
+                case "uncheckTask":
+                    $this->setAchieveTask(false, $params['id']);
                     break;
                 
-                case "v-sign_in":
+                case "signIn":
                     $this->signIn();
                     break;
 
-                case "v-registration":
+                case "registration":
                     $this->registration();
                     break;
 
-                case "v-change_page":
-                    $this->pagination();
+                case "changePage":
+                    $this->pagination($params['id']);
                     break;
 
 				default:
@@ -74,47 +73,47 @@ class VisitorController {
 
     public function addTask() {
         $task_gw = new TaskGateway();
-        $task = new Task($_REQUEST['list'], Validation::filterString($_REQUEST['task']));
+        $task = new Task($_REQUEST['list'], Validation::filterString($_REQUEST['name']));
         $task_gw->addTask($task);
-        $this->frontController->initialisation();
+        $this->initialisation();
     }
 
     public function addList() {
         $list_gw = new ListGateway();
         $list = new Liste(Validation::filterString($_REQUEST['name']));
         $list_gw->addList($list);
-        $this->frontController->initialisation();
+        $this->initialisation();
     }
 
-    public function removeTask() {
+    public function removeTask($id) {
         $task_gw = new TaskGateway();
         $av = new AccessVerify();
-        if($av->taskAccess($_REQUEST['id'])) {
-            $task_gw->removeTask($_REQUEST['id']);
-            $this->frontController->initialisation();
+        if($av->taskAccess($id)) {
+            $task_gw->removeTask($id);
+            $this->initialisation();
         } else {
             throw new Exception("La tâche demandé n'existe pas");
         }
     }
 
-    public function removeList() {
+    public function removeList($id) {
         $list_gw = new ListGateway();
         $av = new AccessVerify();
-        if($av->listAccess($_REQUEST['id'])) {
-            $list_gw->removeList($_REQUEST['id']);
-            $this->frontController->initialisation();
+        if($av->listAccess($id)) {
+            $list_gw->removeList($id);
+            $this->initialisation();
         } else {
             throw new Exception("La liste demandé n'existe pas");
         }
     }
 
-    public function setAchieveTask($bool) {
+    public function setAchieveTask($bool, $id) {
         $task_gw = new TaskGateway();
         $av = new AccessVerify();
-        if($av->taskAccess($_REQUEST['task'])) {
-            $idTask = Validation::filterString($_REQUEST['task']);
+        $idTask = Validation::filterString($id);
+        if($av->taskAccess($idTask)) {
             $task_gw->setAchieveTask($idTask, $bool);
-            $this->frontController->initialisation();
+            $this->initialisation();
         } else {
             throw new Exception("La tâche demandé n'existe pas");
         }
@@ -123,19 +122,19 @@ class VisitorController {
     public function signIn() {
         $mdl_user = new MdlUser();
         if($mdl_user->signIn($_REQUEST['login'],$_REQUEST['password'])) {
-            $this->frontController->initialisation();
+            $this->initialisation();
         }
 	}
 
     public function registration() {
         $mdl_user = new MdlUser();
         if($mdl_user->registration($_REQUEST['login'], $_REQUEST['password'])) {
-            $this->frontController->initialisation();
+            $this->initialisation();
         }
     }
 
-    public function pagination(){
-        $_SESSION['page'] = Validation::filterInt($_REQUEST['page']);
+    public function pagination($nb){
+        $_SESSION['page'] = Validation::filterInt($nb);
         $list_gw = new ListGateway();
         $nbLists = $list_gw->getNbrPublicList();
         $nbPagesMax = ceil($nbLists/6);
@@ -145,7 +144,23 @@ class VisitorController {
         if($_SESSION['page'] >= $nbPagesMax){
             $_SESSION['page'] = $nbPagesMax;
         }
-        $this->frontController->initialisation();
+        $this->initialisation();
+    }
+
+    public function initialisation() {
+        global $dir, $views;
+        $list_gw = new ListGateway();
+        $task_gw = new TaskGateway();
+        if(empty($_SESSION['page'])) {
+            $_SESSION['page'] = 1;
+        }
+        $page = $_SESSION['page'];
+        $lists = $list_gw->getAllPublicListsPage($page);
+        foreach ($lists as $l) {
+            $tasks[$l->getId()] = $task_gw->getTasksList($l);
+        }
+        $nomPage = 'lpu';
+        require($dir.$views['home']);
     }
 }
 

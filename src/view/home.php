@@ -1,3 +1,7 @@
+<?php 
+global $router;
+$role = ($nomPage == 'lpu') ? 'visitor' : 'user';
+?>
 <html>
     <head>
       <title>TUDUM-LIST</title>
@@ -5,7 +9,11 @@
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
       <link href="view/custom.css" rel="stylesheet">
+      <link href="../view/custom.css" rel="stylesheet">
+      <link href="../../view/custom.css" rel="stylesheet">
       <script type="text/javascript" src="view/checkbox.js"></script>    
+      <script type="text/javascript" src="../view/checkbox.js"></script>    
+      <script type="text/javascript" src="../../view/checkbox.js"></script>    
     </head>
     <body>
       
@@ -17,10 +25,9 @@
         <div class="row justify-content-center m-0">
             <div class="card rounded-4 mb-5 w-75">
               <div class="card-body p-3">
-              <form class="d-flex justify-content-flex-start align-items-center mb-0" method="POST">
+              <form class="d-flex justify-content-flex-start align-items-center mb-0" method="POST" action="<?= $router->generate($role, array("action" => "addList")) ?>">
                   <div class="col">
                     <input type="text" class="form-control" placeholder="Nouvelle liste ..." name="name" required>
-                    <input type="hidden" name="action" value="<?= ($nomPage == 'lpu') ? 'v' : 'u' ?>-add_list">
                   </div>
                   <div class="col-auto">
                     
@@ -37,8 +44,6 @@
 
           
           <?php
-          // TODO : Mettre scroll pour tâche
-          $role = ($nomPage == 'lpu') ? '\'v\'' : '\'u\'';
           Foreach ($lists as $l) {
             echo '
             <div class="col-auto">
@@ -48,11 +53,7 @@
           <div class="row justify-content-between">
           <h6 class="col-auto">'.$l->getName().'</h6>';
 
-          if ($nomPage == 'lpu') {
-            echo '<a class="col-auto" href="?action=v-remove_list&id='.$l->getId().'" title="Remove list">';
-          } else {
-            echo '<a class="col-auto" href="?action=u-remove_list&id='.$l->getId().'" title="Remove list">';
-          }
+          echo '<a class="col-auto" href="'.$router->generate($role, array("action" => "removeList", "id" => $l->getId())).'" title="Supprimer la liste">';
           
           echo '<i class="bi bi-trash3 icon-white"></i>
         </a>
@@ -68,23 +69,17 @@
               
 
               if($t->getAchieve() == false){
-                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().','.$role.')" id="'.$t->getId().'"><label class="mx-2">'.$t->getName().'</label>';
+                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().',\''.$role.'\')" id="'.$t->getId().'"><label class="mx-2">'.$t->getName().'</label>';
 
               } else{
-                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().','.$role.')" id="'.$t->getId().'" checked><label class="mx-2"><strike>'.$t->getName().'</strike></label>';
+                echo '<input class="form-check-input my-0" type="checkbox" onclick="checkbox_js('.$t->getId().',\''.$role.'\')" id="'.$t->getId().'" checked><label class="mx-2"><strike>'.$t->getName().'</strike></label>';
               }   
 
               
                 echo '</div>';
 
-                if ($nomPage == 'lpu') {
-                  echo '<a href="?action=v-remove_task&id='.$t->getId().'" title="Remove task">';
-                } else {
-                  echo '<a href="?action=u-remove_task&id='.$t->getId().'" title="Remove task">';
-                }
-                
-                
-                
+                echo '<a href="'.$router->generate($role, array("action" => "removeTask", "id" => $t->getId())).'" title="Supprimer tâche">';
+
                 echo '<i class="bi bi-trash3 icon-red"></i>
                 </a>
               </li>';
@@ -93,15 +88,8 @@
 
             
             echo '</ul>
-            <form class="d-flex justify-content-center align-items-center mt-4" method="POST">
-                <input type="text" class="form-control" placeholder="Nouvelle tâche ..." name="task" required>';
-
-                if ($nomPage == 'lpu') {
-                  echo '<input type="hidden" name="action" value="v-add_task">';
-                } else {
-                  echo '<input type="hidden" name="action" value="u-add_task">';
-                }
-                
+            <form class="d-flex justify-content-center align-items-center mt-4" method="POST" action="'.$router->generate($role, array("action" => "addTask")).'">
+                <input type="text" class="form-control" placeholder="Nouvelle tâche ..." name="name" required>';
 
                 echo '<input type="hidden" name="list" value="'.$l->getId().'">
               <button type="submit" class="btn btn-primary ms-2">Ajouter</button>
@@ -114,10 +102,12 @@
           ?>
       </div>
 
-      <div class="row justify-content-between">
-        <div>
-          <a href="?action=<?= ($nomPage == 'lpu') ? 'v' : 'u' ?>-change_page&page=<?= $page-1 ?>"><i class="bi bi-arrow-left-square-fill" style="color:#e50914;font-size:2em;"></i></a>
-          <a href="?action=<?= ($nomPage == 'lpu') ? 'v' : 'u' ?>-change_page&page=<?= $page+1 ?>"><i class="bi bi-arrow-right-square-fill" style="color:#e50914;font-size:2em;"></i></a>
+      <div class="row">
+        <div class="col-6 text-start">
+          <a href="<?= $router->generate($role, array("action" => "changePage", "id" => $page-1)) ?>"><i class="bi bi-arrow-left-square-fill" style="color:#e50914;font-size:2em;"></i></a>
+        </div>
+        <div class="col-6 text-end">
+          <a href="<?= $router->generate($role, array("action" => "changePage", "id" => $page+1)) ?>"><i class="bi bi-arrow-right-square-fill" style="color:#e50914;font-size:2em;"></i></a>
         </div>
       </div>
 

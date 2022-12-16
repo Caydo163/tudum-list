@@ -1,11 +1,9 @@
 <?php 
 
 class AdminController {
-    private $frontController;
     
-    public function __construct($fc) {
+    public function __construct($params) {
         global $dir, $views, $errors;
-        $this->frontController = $fc;
 		
 		$mdl_admin = new MdlAdmin();
 		
@@ -15,25 +13,26 @@ class AdminController {
 		}
 		
         try{
-			switch(Validation::filterString($_REQUEST['action'])) {
-                case "a-home":
+			$action = (empty($params['action'])) ? null : $params['action'];
+			switch(Validation::filterString($action)) {
+                case NULL:
 					$this->home();
                     break;
 				
-				case "a-remove_user":
-					$this->removeUser();
+				case "removeUser":
+					$this->removeUser($params['login']);
 					break;
 
-				case "a-list_user":
-					$this->showUserList();
+				case "listUser":
+					$this->showUserList($params['login']);
 					break;
 
-				case "a-remove_list":
-					$this->removeList();
+				case "removeList":
+					$this->removeList(intval($params['id']));
 					break;
 
-				case "a-remove_task":
-					$this->removeTask();
+				case "removeTask":
+					$this->removeTask(intval($params['id']));
 					break;
 
 				default:
@@ -65,9 +64,9 @@ class AdminController {
         require($dir.$views['admin']);
     }
 
-	public function removeUser() {
+	public function removeUser($login) {
 		$user_gw = new UserGateway();
-		$user = $user_gw->getUserByLogin($_REQUEST['delete_login']);
+		$user = $user_gw->getUserByLogin($login);
 		if($user->getAdmin()) {
 			throw new Exception("Cet utilisateur ne peut pas être supprimé à cause de son rôle (admin)");
 		}
@@ -75,14 +74,14 @@ class AdminController {
 		$this->home();
 	}
 
-	public function showUserList() {
+	public function showUserList($login) {
 		$list_gw = new ListGateway();
 		$user_gw = new UserGateway();
 		$task_gw = new TaskGateway();
-		if(empty($_REQUEST['login'])) {
+		if(empty($login)) {
 			$user = $user_gw->getUserByLogin($_SESSION['user_adminPage']);
 		} else {
-			$user = $user_gw->getUserByLogin($_REQUEST['login']);
+			$user = $user_gw->getUserByLogin($login);
 			$_SESSION['user_adminPage'] = $user->getLogin();
 		}
 		$lists = $list_gw->getAllUserLists($user);
@@ -93,28 +92,27 @@ class AdminController {
 		$this->home($lists, $tasks, $user->getLogin());
 	}
 
-	public function removeList() {
+	public function removeList($id) {
 		$list_gw = new ListGateway();
 		$av = new AccessVerify();
-        if($av->listAccess($_REQUEST['id'])) {
-			$list_gw->removeList($_REQUEST['id']);
-			$this->showUserList();
+        if($av->listAccess($id)) {
+			$list_gw->removeList($id);
+			$this->showUserList($_SESSION['user_adminPage']);
         } else {
 			throw new Exception("La liste demandé n'existe pas");
 		}
 	}
 
-	public function removeTask() {
+	public function removeTask($id) {
 		$task_gw = new TaskGateway();
 		$av = new AccessVerify();
-		if($av->taskAccess($_REQUEST['id'])) {
-			$task_gw->removeTask($_REQUEST['id']);
-			$this->showUserList();
+		if($av->taskAccess($id)) {
+			$task_gw->removeTask($id);
+			$this->showUserList($_SESSION['user_adminPage']);
         } else {
 			throw new Exception("La tâche demandé n'existe pas");
 		}
     }
-
 }
 
 ?>
